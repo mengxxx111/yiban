@@ -49,6 +49,34 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes charRise {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 高级感：按钮磁吸、卡片聚光灯 */
+        .btn {
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            will-change: transform;
+        }
+        .result-image {
+            position: relative;
+            overflow: hidden;
+        }
+        .result-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(212,175,55,0.15), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .result-image:hover::before {
+            opacity: 1;
+        }
+
         /* 启动页 */
         .start-page {
             text-align: center;
@@ -370,6 +398,44 @@
     </div>
 
     <script>
+        // ========== 高级交互：文字逐字入场 ==========
+        function splitText(element) {
+            const text = element.innerText;
+            element.innerHTML = '';
+            [...text].forEach((ch, i) => {
+                const span = document.createElement('span');
+                span.style.display = 'inline-block';
+                span.style.opacity = '0';
+                span.style.animation = `charRise 0.6s cubic-bezier(0.23,1,0.32,1) forwards ${i*0.08}s`;
+                span.innerText = ch === ' ' ? '\u00A0' : ch;
+                element.appendChild(span);
+            });
+        }
+        splitText(document.querySelector('.logo'));
+        splitText(document.querySelector('.slogan'));
+
+        // ========== 高级交互：按钮磁吸效果 ==========
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width/2;
+                const y = e.clientY - rect.top - rect.height/2;
+                btn.style.transform = `translate(${x*0.2}px, ${y*0.2}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0,0)';
+            });
+        });
+
+        // ========== 高级交互：聚光灯跟随 ==========
+        document.querySelectorAll('.result-image').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--x', `${e.clientX - rect.left}px`);
+                card.style.setProperty('--y', `${e.clientY - rect.top}px`);
+            });
+        });
+
         // ========== 配置项 ==========
         // 生图API地址，部署边缘函数后填这里
         const IMAGE_API_URL = '';
