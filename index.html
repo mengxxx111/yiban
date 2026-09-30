@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>一半 - 好的关系，各撑一半</title>
     <style>
         * {
@@ -11,302 +11,287 @@
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
         }
-        /* 隐藏平台水印 */
-        div[class*="watermark"],
-        div[class*="copyright"],
-        a[href*="aiforce"],
-        a[href*="doubao"] {
-            display: none !important;
+        *::selection {
+            background: rgba(212,175,55,0.3);
         }
-
         body {
-            background: #1a1a1f;
-            color: #f0f0f0;
+            background: radial-gradient(ellipse at top, #2a2118 0%, #18181c 50%, #101014 100%);
+            color: #f0e9d8;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
+            overflow-x: hidden;
         }
-
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140%;
+            height: 70%;
+            background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
         .container {
             width: 100%;
             max-width: 420px;
             position: relative;
+            z-index: 1;
         }
-
         .page {
             display: none;
-            animation: fadeIn 0.5s ease;
+            animation: pageFade 0.8s cubic-bezier(0.23,1,0.32,1);
         }
-
         .page.active {
             display: block;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes pageFade {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes charRise {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 高级感：按钮磁吸、卡片聚光灯 */
-        .btn {
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            will-change: transform;
-        }
-        .result-image {
-            position: relative;
-            overflow: hidden;
-        }
-        .result-image::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(212,175,55,0.15), transparent 40%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-            z-index: 1;
-        }
-        .result-image:hover::before {
-            opacity: 1;
         }
 
         /* 启动页 */
         .start-page {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
         }
-
         .logo {
-            font-size: 48px;
-            font-weight: 300;
-            letter-spacing: 12px;
-            margin-bottom: 20px;
+            font-size: 64px;
+            font-weight: 200;
+            letter-spacing: 16px;
+            margin-bottom: 24px;
             color: #d4af37;
+            text-shadow: 0 0 40px rgba(212,175,55,0.3);
         }
-
         .slogan {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 300;
-            color: #aaa;
-            margin-bottom: 80px;
-            letter-spacing: 2px;
+            color: #a89f8c;
+            margin-bottom: 100px;
+            letter-spacing: 4px;
         }
-
         .divider {
-            width: 40%;
+            width: 30%;
             height: 1px;
-            background: linear-gradient(to right, transparent, #d4af37, transparent);
+            background: linear-gradient(to right, transparent, rgba(212,175,55,0.6), transparent);
             margin: 0 auto 60px;
         }
-
         .btn {
             width: 100%;
-            padding: 16px;
-            border: 1px solid #d4af37;
-            background: transparent;
+            padding: 18px;
+            border: 1px solid rgba(212,175,55,0.5);
+            background: rgba(212,175,55,0.05);
             color: #d4af37;
-            font-size: 16px;
-            letter-spacing: 4px;
+            font-size: 15px;
+            letter-spacing: 6px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.5s cubic-bezier(0.23,1,0.32,1);
             border-radius: 2px;
+            backdrop-filter: blur(10px);
+            will-change: transform;
         }
-
         .btn:hover {
             background: #d4af37;
-            color: #1a1a1f;
+            color: #18181c;
+            box-shadow: 0 0 30px rgba(212,175,55,0.4);
         }
 
-        /* 填写页 */
+        /* 表单页 */
         .form-page h2 {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 300;
-            margin-bottom: 40px;
+            margin-bottom: 48px;
             text-align: center;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
+            color: #d4af37;
         }
-
         .form-group {
-            margin-bottom: 30px;
+            margin-bottom: 32px;
         }
-
         .form-group label {
             display: block;
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
+            font-size: 13px;
+            color: #8a8070;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
         }
-
-        .form-group input,
         .form-group select {
             width: 100%;
-            padding: 12px;
-            background: #25252b;
-            border: 1px solid #333;
-            color: #f0f0f0;
+            padding: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(212,175,55,0.15);
+            color: #f0e9d8;
             font-size: 15px;
             border-radius: 2px;
             outline: none;
+            backdrop-filter: blur(10px);
         }
-
-        .form-group input:focus,
         .form-group select:focus {
             border-color: #d4af37;
         }
-
+        .date-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
         .tag-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
         }
-
         .tag {
-            padding: 12px;
+            padding: 14px;
             text-align: center;
-            border: 1px solid #333;
-            background: #25252b;
-            color: #aaa;
+            border: 1px solid rgba(212,175,55,0.15);
+            background: rgba(255,255,255,0.03);
+            color: #a89f8c;
             cursor: pointer;
             font-size: 14px;
             border-radius: 2px;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
         }
-
         .tag.selected {
             border-color: #d4af37;
             color: #d4af37;
-            background: rgba(212, 175, 55, 0.1);
+            background: rgba(212,175,55,0.1);
         }
 
         /* 加载页 */
         .loading-page {
             text-align: center;
-            padding: 80px 20px;
+            padding: 100px 20px;
         }
-
         .loading-text {
-            font-size: 16px;
-            color: #aaa;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
+            font-size: 15px;
+            color: #a89f8c;
+            margin-bottom: 40px;
+            letter-spacing: 4px;
         }
-
         .progress-bar {
             width: 100%;
-            height: 2px;
-            background: #333;
-            border-radius: 1px;
+            height: 1px;
+            background: rgba(212,175,55,0.1);
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
-
         .progress {
             height: 100%;
             background: linear-gradient(to right, #d4af37, #f0d060);
             width: 0%;
             transition: width 0.3s;
         }
-
         .loading-tip {
-            font-size: 13px;
-            color: #666;
+            font-size: 12px;
+            color: #6a6255;
+            letter-spacing: 2px;
         }
 
         /* 结果页 */
         .result-page h2 {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 300;
             text-align: center;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
+            margin-bottom: 24px;
+            letter-spacing: 6px;
+            color: #d4af37;
         }
-
         .result-image {
             width: 100%;
             aspect-ratio: 3/4;
-            background: #25252b;
+            background: rgba(255,255,255,0.03);
             border-radius: 4px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative;
+            border: 1px solid rgba(212,175,55,0.15);
         }
-
+        .result-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(212,175,55,0.2), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .result-image:hover::before {
+            opacity: 1;
+        }
         .result-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         .result-tags {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
         }
-
         .result-tag {
-            padding: 6px 12px;
-            border: 1px solid #d4af37;
+            padding: 6px 14px;
+            border: 1px solid rgba(212,175,55,0.4);
             color: #d4af37;
             font-size: 12px;
             border-radius: 20px;
+            letter-spacing: 1px;
         }
-
         .meet-tip {
-            background: rgba(212, 175, 55, 0.08);
-            border-left: 2px solid #d4af37;
-            padding: 15px;
-            margin-bottom: 25px;
+            background: rgba(212,175,55,0.05);
+            border-left: 1px solid #d4af37;
+            padding: 18px;
+            margin-bottom: 30px;
             font-size: 14px;
-            line-height: 1.6;
-            color: #ccc;
+            line-height: 1.8;
+            color: #c8c0b0;
+            border-radius: 0 2px 2px 0;
         }
-
         .meet-tip strong {
             color: #d4af37;
             font-weight: normal;
+            letter-spacing: 2px;
         }
-
         .result-desc {
-            font-size: 13px;
-            color: #666;
+            font-size: 12px;
+            color: #6a6255;
             text-align: center;
-            margin-bottom: 30px;
-            line-height: 1.8;
+            margin-bottom: 36px;
+            line-height: 2;
+            letter-spacing: 1px;
         }
-
         .btn-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
-
         .btn-secondary {
-            border-color: #444;
-            color: #aaa;
+            border-color: rgba(255,255,255,0.1);
+            color: #a89f8c;
+            background: transparent;
         }
-
         .btn-secondary:hover {
-            background: #444;
-            color: #f0f0f0;
+            background: rgba(255,255,255,0.05);
+            color: #f0e9d8;
+            box-shadow: none;
         }
-
         .footer-text {
             text-align: center;
-            font-size: 12px;
-            color: #444;
-            margin-top: 40px;
+            font-size: 11px;
+            color: #4a4438;
+            margin-top: 48px;
+            letter-spacing: 2px;
         }
     </style>
 </head>
@@ -326,7 +311,7 @@
             
             <div class="form-group">
                 <label>你的生日</label>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                <div class="date-row">
                     <select id="birth-year">
                         <option value="">年</option>
                     </select>
@@ -357,7 +342,7 @@
                 </div>
             </div>
 
-            <button class="btn" style="margin-top: 20px;" onclick="generate()">开始拼凑</button>
+            <button class="btn" style="margin-top: 24px;" onclick="generate()">开始拼凑</button>
         </div>
 
         <!-- 加载页 -->
@@ -398,56 +383,7 @@
     </div>
 
     <script>
-        // ========== 高级交互：文字逐字入场 ==========
-        function splitText(element) {
-            const text = element.innerText;
-            element.innerHTML = '';
-            [...text].forEach((ch, i) => {
-                const span = document.createElement('span');
-                span.style.display = 'inline-block';
-                span.style.opacity = '0';
-                span.style.animation = `charRise 0.6s cubic-bezier(0.23,1,0.32,1) forwards ${i*0.08}s`;
-                span.innerText = ch === ' ' ? '\u00A0' : ch;
-                element.appendChild(span);
-            });
-        }
-        splitText(document.querySelector('.logo'));
-        splitText(document.querySelector('.slogan'));
-
-        // ========== 高级交互：按钮磁吸效果 ==========
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('mousemove', e => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width/2;
-                const y = e.clientY - rect.top - rect.height/2;
-                btn.style.transform = `translate(${x*0.2}px, ${y*0.2}px)`;
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'translate(0,0)';
-            });
-        });
-
-        // ========== 高级交互：聚光灯跟随 ==========
-        document.querySelectorAll('.result-image').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                card.style.setProperty('--x', `${e.clientX - rect.left}px`);
-                card.style.setProperty('--y', `${e.clientY - rect.top}px`);
-            });
-        });
-
-        // ========== 配置项 ==========
-        // 生图API地址，部署边缘函数后填这里
-        const IMAGE_API_URL = '';
-        // 小家跳转地址
-        const XIAOJIA_URL = 'https://你的小家地址';
-
-        // 相遇指引池
-        const timePool = ['本周六傍晚', '周日午后', '工作日清晨', '周五深夜', '周三午后', '雨天的下午'];
-        const placePool = ['独立书店', '通勤地铁', '街角便利店', '电影院', '咖啡馆', 'livehouse', '公园步道', '旧书馆'];
-        const crowdPool = ['独自出行的人', '朋友的朋友聚会', '穿浅色衣服的人', '手里拿着书的人', '戴耳机的人'];
-
-        // 人像库：按性别+气质匹配
+        // 人像库
         const portraitPool = {
             'male': {
                 '清冷': ['https://aka.doubaocdn.com/s/DTpHwCwXQU'],
@@ -463,52 +399,72 @@
             }
         };
 
-        // 星座对应
+        // 相遇指引池
+        const timePool = ['本周六傍晚', '周日午后', '工作日清晨', '周五深夜', '周三午后', '雨天的下午'];
+        const placePool = ['独立书店', '通勤地铁', '街角便利店', '电影院', '咖啡馆', 'livehouse', '公园步道', '旧书馆'];
+        const crowdPool = ['独自出行的人', '朋友的朋友聚会', '穿浅色衣服的人', '手里拿着书的人', '戴耳机的人'];
+
+        // 星座
         const zodiacSigns = [
-            {name:'摩羯座',start:'12-22',end:'01-19'},
-            {name:'水瓶座',start:'01-20',end:'02-18'},
-            {name:'双鱼座',start:'02-19',end:'03-20'},
-            {name:'白羊座',start:'03-21',end:'04-19'},
-            {name:'金牛座',start:'04-20',end:'05-20'},
-            {name:'双子座',start:'05-21',end:'06-21'},
-            {name:'巨蟹座',start:'06-22',end:'07-22'},
-            {name:'狮子座',start:'07-23',end:'08-22'},
-            {name:'处女座',start:'08-23',end:'09-22'},
-            {name:'天秤座',start:'09-23',end:'10-23'},
-            {name:'天蝎座',start:'10-24',end:'11-22'},
-            {name:'射手座',start:'11-23',end:'12-21'}
+            {name:'摩羯座',start:'12-22',end:'01-19'},{name:'水瓶座',start:'01-20',end:'02-18'},
+            {name:'双鱼座',start:'02-19',end:'03-20'},{name:'白羊座',start:'03-21',end:'04-19'},
+            {name:'金牛座',start:'04-20',end:'05-20'},{name:'双子座',start:'05-21',end:'06-21'},
+            {name:'巨蟹座',start:'06-22',end:'07-22'},{name:'狮子座',start:'07-23',end:'08-22'},
+            {name:'处女座',start:'08-23',end:'09-22'},{name:'天秤座',start:'09-23',end:'10-23'},
+            {name:'天蝎座',start:'10-24',end:'11-22'},{name:'射手座',start:'11-23',end:'12-21'}
         ];
 
-        // ========== 初始化生日选项 ==========
+        // 初始化生日下拉
         const yearSelect = document.getElementById('birth-year');
         for (let y = 2008; y >= 1970; y--) {
             const opt = document.createElement('option');
-            opt.value = y;
-            opt.text = y + '年';
-            yearSelect.add(opt);
+            opt.value = y; opt.text = y + '年'; yearSelect.add(opt);
         }
         const monthSelect = document.getElementById('birth-month');
         for (let m = 1; m <= 12; m++) {
             const opt = document.createElement('option');
-            opt.value = m.toString().padStart(2, '0');
-            opt.text = m + '月';
-            monthSelect.add(opt);
+            opt.value = m.toString().padStart(2,'0'); opt.text = m + '月'; monthSelect.add(opt);
         }
         const daySelect = document.getElementById('birth-day');
         for (let d = 1; d <= 31; d++) {
             const opt = document.createElement('option');
-            opt.value = d.toString().padStart(2, '0');
-            opt.text = d + '日';
-            daySelect.add(opt);
+            opt.value = d.toString().padStart(2,'0'); opt.text = d + '日'; daySelect.add(opt);
         }
 
-        // ========== 页面切换 ==========
-        function goPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
+        // 文字逐字入场
+        function splitText(el) {
+            const text = el.innerText; el.innerHTML = '';
+            [...text].forEach((ch,i) => {
+                const span = document.createElement('span');
+                span.style.display = 'inline-block'; span.style.opacity = '0';
+                span.style.animation = `charRise 0.8s cubic-bezier(0.23,1,0.32,1) forwards ${i*0.1}s`;
+                span.innerText = ch === ' ' ? '\u00A0' : ch; el.appendChild(span);
+            });
         }
+        splitText(document.querySelector('.logo'));
+        splitText(document.querySelector('.slogan'));
 
-        // ========== 标签选择 ==========
+        // 磁吸按钮
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const r = btn.getBoundingClientRect();
+                const x = e.clientX - r.left - r.width/2;
+                const y = e.clientY - r.top - r.height/2;
+                btn.style.transform = `translate(${x*0.15}px, ${y*0.15}px)`;
+            });
+            btn.addEventListener('mouseleave', () => btn.style.transform = 'translate(0,0)');
+        });
+
+        // 聚光灯
+        document.querySelectorAll('.result-image').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const r = card.getBoundingClientRect();
+                card.style.setProperty('--x', `${e.clientX - r.left}px`);
+                card.style.setProperty('--y', `${e.clientY - r.top}px`);
+            });
+        });
+
+        // 标签选择
         let selectedTemperament = '';
         document.querySelectorAll('#temperament-group .tag').forEach(tag => {
             tag.addEventListener('click', () => {
@@ -518,100 +474,57 @@
             });
         });
 
-        // ========== 获取星座 ==========
+        function goPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
         function getZodiac(birthday) {
             if (!birthday) return '未知';
             const md = birthday.slice(5);
-            for (let sign of zodiacSigns) {
-                if (md >= sign.start && md <= sign.end) return sign.name;
-            }
+            for (let s of zodiacSigns) if (md >= s.start && md <= s.end) return s.name;
             return '摩羯座';
         }
+        function randomPick(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
 
-        // ========== 随机抽取 ==========
-        function randomPick(arr) {
-            return arr[Math.floor(Math.random() * arr.length)];
-        }
-
-        // ========== 生成核心逻辑 ==========
         async function generate() {
             const year = document.getElementById('birth-year').value;
             const month = document.getElementById('birth-month').value;
             const day = document.getElementById('birth-day').value;
             const gender = document.getElementById('gender').value;
-
-            if (!year || !month || !day) {
-                alert('请选择完整的生日');
-                return;
-            }
-            if (!selectedTemperament) {
-                alert('请选择偏好的气质');
-                return;
-            }
+            if (!year || !month || !day) { alert('请选择完整生日'); return; }
+            if (!selectedTemperament) { alert('请选择偏好气质'); return; }
 
             goPage('page-loading');
-            
-            // 进度条动画
             let progress = 0;
             const timer = setInterval(() => {
-                progress += Math.random() * 15;
+                progress += Math.random()*15;
                 if (progress > 90) progress = 90;
                 document.getElementById('progress').style.width = progress + '%';
             }, 200);
 
             try {
-                const birthday = `${month}-${day}`;
-                const zodiac = getZodiac(birthday);
+                const zodiac = getZodiac(`${year}-${month}-${day}`);
                 const targetGender = gender === 'male' ? 'female' : 'male';
                 const targetGenderText = gender === 'male' ? '女性' : '男性';
-
-                // 生成相遇指引
-                const time = randomPick(timePool);
-                const place = randomPick(placePool);
-                const crowd = randomPick(crowdPool);
-
-                // 生成标签
+                const time = randomPick(timePool), place = randomPick(placePool), crowd = randomPick(crowdPool);
                 const tags = [zodiac, selectedTemperament, targetGenderText];
-
-                // 直接从人像池匹配真实照片
                 const imageUrl = randomPick(portraitPool[targetGender][selectedTemperament]);
 
                 clearInterval(timer);
                 document.getElementById('progress').style.width = '100%';
 
-                // 渲染结果
                 setTimeout(() => {
                     document.getElementById('result-image').innerHTML = `<img src="${imageUrl}" alt="另一半">`;
-                    
-                    document.getElementById('result-tags').innerHTML = tags.map(t => 
-                        `<span class="result-tag">${t}</span>`
-                    ).join('');
-
-                    document.getElementById('meet-tip').innerHTML = `
-                        <strong>今日相遇提示</strong><br>
-                        ${time} · ${place}<br>
-                        留意${crowd}
-                    `;
-
+                    document.getElementById('result-tags').innerHTML = tags.map(t => `<span class="result-tag">${t}</span>`).join('');
+                    document.getElementById('meet-tip').innerHTML = `<strong>今日相遇提示</strong><br>${time} · ${place}<br>留意${crowd}`;
                     goPage('page-result');
-                }, 300);
-
-            } catch (e) {
-                clearInterval(timer);
-                alert('生成失败，请重试');
-                goPage('page-form');
+                }, 400);
+            } catch(e) {
+                clearInterval(timer); alert('生成失败，请重试'); goPage('page-form');
             }
         }
-
-        // ========== 跳转小家 ==========
-        function goXiaojia() {
-            window.open(XIAOJIA_URL, '_blank');
-        }
-
-        // ========== 保存卡片（简化版） ==========
-        function saveCard() {
-            alert('长按图片即可保存');
-        }
+        function goXiaojia() { window.open('https://你的小家地址', '_blank'); }
+        function saveCard() { alert('长按图片即可保存'); }
     </script>
 </body>
 </html>
