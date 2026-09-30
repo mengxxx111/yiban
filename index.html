@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>一半 - 好的关系，各撑一半</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background: #1a1a1f;
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 启动页 */
+        .start-page {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 300;
+            letter-spacing: 12px;
+            margin-bottom: 20px;
+            color: #d4af37;
+        }
+
+        .slogan {
+            font-size: 18px;
+            font-weight: 300;
+            color: #aaa;
+            margin-bottom: 80px;
+            letter-spacing: 2px;
+        }
+
+        .divider {
+            width: 40%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #d4af37, transparent);
+            margin: 0 auto 60px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #d4af37;
+            background: transparent;
+            color: #d4af37;
+            font-size: 16px;
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        .btn:hover {
+            background: #d4af37;
+            color: #1a1a1f;
+        }
+
+        /* 填写页 */
+        .form-page h2 {
+            font-size: 22px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: #25252b;
+            border: 1px solid #333;
+            color: #f0f0f0;
+            font-size: 15px;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #d4af37;
+        }
+
+        .tag-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .tag {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #333;
+            background: #25252b;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+        .tag.selected {
+            border-color: #d4af37;
+            color: #d4af37;
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* 加载页 */
+        .loading-page {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .loading-text {
+            font-size: 16px;
+            color: #aaa;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 2px;
+            background: #333;
+            border-radius: 1px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #d4af37, #f0d060);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .loading-tip {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* 结果页 */
+        .result-page h2 {
+            font-size: 20px;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .result-image {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: #25252b;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .result-tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .result-tag {
+            padding: 6px 12px;
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            font-size: 12px;
+            border-radius: 20px;
+        }
+
+        .meet-tip {
+            background: rgba(212, 175, 55, 0.08);
+            border-left: 2px solid #d4af37;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .meet-tip strong {
+            color: #d4af37;
+            font-weight: normal;
+        }
+
+        .result-desc {
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .btn-secondary {
+            border-color: #444;
+            color: #aaa;
+        }
+
+        .btn-secondary:hover {
+            background: #444;
+            color: #f0f0f0;
+        }
+
+        .footer-text {
+            text-align: center;
+            font-size: 12px;
+            color: #444;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 启动页 -->
+        <div class="page start-page active" id="page-start">
+            <div class="logo">一半</div>
+            <div class="slogan">好的关系，各撑一半</div>
+            <div class="divider"></div>
+            <button class="btn" onclick="goPage('page-form')">抽取你的另一半</button>
+        </div>
+
+        <!-- 填写页 -->
+        <div class="page form-page" id="page-form">
+            <h2>告诉我你的样子</h2>
+            
+            <div class="form-group">
+                <label>你的生日</label>
+                <input type="date" id="birthday">
+            </div>
+
+            <div class="form-group">
+                <label>你的性别</label>
+                <select id="gender">
+                    <option value="male">男</option>
+                    <option value="female">女</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>你偏好的气质</label>
+                <div class="tag-group" id="temperament-group">
+                    <div class="tag" data-value="清冷">清冷</div>
+                    <div class="tag" data-value="阳光">阳光</div>
+                    <div class="tag" data-value="温润">温润</div>
+                    <div class="tag" data-value="疏离">疏离</div>
+                </div>
+            </div>
+
+            <button class="btn" style="margin-top: 20px;" onclick="generate()">开始拼凑</button>
+        </div>
+
+        <!-- 加载页 -->
+        <div class="page loading-page" id="page-loading">
+            <div class="loading-text">正在人潮里，帮你找那一半</div>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="loading-tip">你做好你的一半，剩下的，看遇见谁</div>
+        </div>
+
+        <!-- 结果页 -->
+        <div class="page result-page" id="page-result">
+            <h2>你的另一半</h2>
+            
+            <div class="result-image" id="result-image">
+                <span style="color:#555;">生成中...</span>
+            </div>
+
+            <div class="result-tags" id="result-tags"></div>
+
+            <div class="meet-tip" id="meet-tip"></div>
+
+            <p class="result-desc">
+                感情里最公平的是，<br>
+                我们都只能决定自己的那一半
+            </p>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="generate()">再抽一次</button>
+                <button class="btn" onclick="saveCard()">保存图片</button>
+            </div>
+
+            <button class="btn btn-secondary" onclick="goXiaojia()">已经遇到TA了？去小家说第一句话</button>
+
+            <p class="footer-text">内容仅供娱乐参考</p>
+        </div>
+    </div>
+
+    <script>
+        // ========== 配置项 ==========
+        // 生图API地址，部署边缘函数后填这里
+        const IMAGE_API_URL = '';
+        // 小家跳转地址
+        const XIAOJIA_URL = 'https://你的小家地址';
+
+        // 相遇指引池
+        const timePool = ['本周六傍晚', '周日午后', '工作日清晨', '周五深夜', '周三午后', '雨天的下午'];
+        const placePool = ['独立书店', '通勤地铁', '街角便利店', '电影院', '咖啡馆', 'livehouse', '公园步道', '旧书馆'];
+        const crowdPool = ['独自出行的人', '朋友的朋友聚会', '穿浅色衣服的人', '手里拿着书的人', '戴耳机的人'];
+
+        // 星座对应
+        const zodiacSigns = [
+            {name:'摩羯座',start:'12-22',end:'01-19'},
+            {name:'水瓶座',start:'01-20',end:'02-18'},
+            {name:'双鱼座',start:'02-19',end:'03-20'},
+            {name:'白羊座',start:'03-21',end:'04-19'},
+            {name:'金牛座',start:'04-20',end:'05-20'},
+            {name:'双子座',start:'05-21',end:'06-21'},
+            {name:'巨蟹座',start:'06-22',end:'07-22'},
+            {name:'狮子座',start:'07-23',end:'08-22'},
+            {name:'处女座',start:'08-23',end:'09-22'},
+            {name:'天秤座',start:'09-23',end:'10-23'},
+            {name:'天蝎座',start:'10-24',end:'11-22'},
+            {name:'射手座',start:'11-23',end:'12-21'}
+        ];
+
+        // ========== 页面切换 ==========
+        function goPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // ========== 标签选择 ==========
+        let selectedTemperament = '';
+        document.querySelectorAll('#temperament-group .tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                document.querySelectorAll('#temperament-group .tag').forEach(t => t.classList.remove('selected'));
+                tag.classList.add('selected');
+                selectedTemperament = tag.dataset.value;
+            });
+        });
+
+        // ========== 获取星座 ==========
+        function getZodiac(birthday) {
+            if (!birthday) return '未知';
+            const md = birthday.slice(5);
+            for (let sign of zodiacSigns) {
+                if (md >= sign.start && md <= sign.end) return sign.name;
+            }
+            return '摩羯座';
+        }
+
+        // ========== 随机抽取 ==========
+        function randomPick(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        // ========== 生成核心逻辑 ==========
+        async function generate() {
+            const birthday = document.getElementById('birthday').value;
+            const gender = document.getElementById('gender').value;
+
+            if (!birthday) {
+                alert('请选择你的生日');
+                return;
+            }
+            if (!selectedTemperament) {
+                alert('请选择偏好的气质');
+                return;
+            }
+
+            goPage('page-loading');
+            
+            // 进度条动画
+            let progress = 0;
+            const timer = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                document.getElementById('progress').style.width = progress + '%';
+            }, 200);
+
+            try {
+                const zodiac = getZodiac(birthday);
+                const targetGender = gender === 'male' ? '女性' : '男性';
+
+                // 生成相遇指引
+                const time = randomPick(timePool);
+                const place = randomPick(placePool);
+                const crowd = randomPick(crowdPool);
+
+                // 生成标签
+                const tags = [zodiac, selectedTemperament, targetGender];
+
+                // 调用生图API（如果配置了地址）
+                let imageUrl = '';
+                if (IMAGE_API_URL) {
+                    const prompt = `一张真人质感的${targetGender}肖像照，${selectedTemperament}气质，自然光影，电影感，高清，正面半身像`;
+                    const res = await fetch(IMAGE_API_URL, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ prompt })
+                    });
+                    const data = await res.json();
+                    imageUrl = data.imageUrl || data.url;
+                } else {
+                    // 没配置API时用占位图，不影响流程测试
+                    imageUrl = 'https://picsum.photos/seed/' + Math.random() + '/600/800';
+                }
+
+                clearInterval(timer);
+                document.getElementById('progress').style.width = '100%';
+
+                // 渲染结果
+                setTimeout(() => {
+                    document.getElementById('result-image').innerHTML = `<img src="${imageUrl}" alt="另一半">`;
+                    
+                    document.getElementById('result-tags').innerHTML = tags.map(t => 
+                        `<span class="result-tag">${t}</span>`
+                    ).join('');
+
+                    document.getElementById('meet-tip').innerHTML = `
+                        <strong>今日相遇提示</strong><br>
+                        ${time} · ${place}<br>
+                        留意${crowd}
+                    `;
+
+                    goPage('page-result');
+                }, 300);
+
+            } catch (e) {
+                clearInterval(timer);
+                alert('生成失败，请重试');
+                goPage('page-form');
+            }
+        }
+
+        // ========== 跳转小家 ==========
+        function goXiaojia() {
+            window.open(XIAOJIA_URL, '_blank');
+        }
+
+        // ========== 保存卡片（简化版） ==========
+        function saveCard() {
+            alert('长按图片即可保存');
+        }
+    </script>
+</body>
+</html>
