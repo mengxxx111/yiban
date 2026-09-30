@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>一半 - 好的关系，各撑一半</title>
     <style>
         * {
@@ -10,6 +10,13 @@
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        /* 隐藏平台水印 */
+        div[class*="watermark"],
+        div[class*="copyright"],
+        a[href*="aiforce"],
+        a[href*="doubao"] {
+            display: none !important;
         }
 
         body {
@@ -291,7 +298,17 @@
             
             <div class="form-group">
                 <label>你的生日</label>
-                <input type="date" id="birthday">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                    <select id="birth-year">
+                        <option value="">年</option>
+                    </select>
+                    <select id="birth-month">
+                        <option value="">月</option>
+                    </select>
+                    <select id="birth-day">
+                        <option value="">日</option>
+                    </select>
+                </div>
             </div>
 
             <div class="form-group">
@@ -364,6 +381,22 @@
         const placePool = ['独立书店', '通勤地铁', '街角便利店', '电影院', '咖啡馆', 'livehouse', '公园步道', '旧书馆'];
         const crowdPool = ['独自出行的人', '朋友的朋友聚会', '穿浅色衣服的人', '手里拿着书的人', '戴耳机的人'];
 
+        // 人像库：按性别+气质匹配
+        const portraitPool = {
+            'male': {
+                '清冷': ['https://aka.doubaocdn.com/s/DTpHwCwXQU'],
+                '阳光': ['https://aka.doubaocdn.com/s/4uFw6yfTE7'],
+                '温润': ['https://aka.doubaocdn.com/s/JrQyvLLJu2'],
+                '疏离': ['https://aka.doubaocdn.com/s/NePzLYcYFv']
+            },
+            'female': {
+                '清冷': ['https://aka.doubaocdn.com/s/XjohHoXKVQ'],
+                '阳光': ['https://aka.doubaocdn.com/s/1trgIhhgon'],
+                '温润': ['https://aka.doubaocdn.com/s/tVBtLL1oMx'],
+                '疏离': ['https://aka.doubaocdn.com/s/1iXM9Dn4p3']
+            }
+        };
+
         // 星座对应
         const zodiacSigns = [
             {name:'摩羯座',start:'12-22',end:'01-19'},
@@ -379,6 +412,29 @@
             {name:'天蝎座',start:'10-24',end:'11-22'},
             {name:'射手座',start:'11-23',end:'12-21'}
         ];
+
+        // ========== 初始化生日选项 ==========
+        const yearSelect = document.getElementById('birth-year');
+        for (let y = 2008; y >= 1970; y--) {
+            const opt = document.createElement('option');
+            opt.value = y;
+            opt.text = y + '年';
+            yearSelect.add(opt);
+        }
+        const monthSelect = document.getElementById('birth-month');
+        for (let m = 1; m <= 12; m++) {
+            const opt = document.createElement('option');
+            opt.value = m.toString().padStart(2, '0');
+            opt.text = m + '月';
+            monthSelect.add(opt);
+        }
+        const daySelect = document.getElementById('birth-day');
+        for (let d = 1; d <= 31; d++) {
+            const opt = document.createElement('option');
+            opt.value = d.toString().padStart(2, '0');
+            opt.text = d + '日';
+            daySelect.add(opt);
+        }
 
         // ========== 页面切换 ==========
         function goPage(pageId) {
@@ -413,11 +469,13 @@
 
         // ========== 生成核心逻辑 ==========
         async function generate() {
-            const birthday = document.getElementById('birthday').value;
+            const year = document.getElementById('birth-year').value;
+            const month = document.getElementById('birth-month').value;
+            const day = document.getElementById('birth-day').value;
             const gender = document.getElementById('gender').value;
 
-            if (!birthday) {
-                alert('请选择你的生日');
+            if (!year || !month || !day) {
+                alert('请选择完整的生日');
                 return;
             }
             if (!selectedTemperament) {
@@ -436,8 +494,10 @@
             }, 200);
 
             try {
+                const birthday = `${month}-${day}`;
                 const zodiac = getZodiac(birthday);
-                const targetGender = gender === 'male' ? '女性' : '男性';
+                const targetGender = gender === 'male' ? 'female' : 'male';
+                const targetGenderText = gender === 'male' ? '女性' : '男性';
 
                 // 生成相遇指引
                 const time = randomPick(timePool);
@@ -445,23 +505,10 @@
                 const crowd = randomPick(crowdPool);
 
                 // 生成标签
-                const tags = [zodiac, selectedTemperament, targetGender];
+                const tags = [zodiac, selectedTemperament, targetGenderText];
 
-                // 调用生图API（如果配置了地址）
-                let imageUrl = '';
-                if (IMAGE_API_URL) {
-                    const prompt = `一张真人质感的${targetGender}肖像照，${selectedTemperament}气质，自然光影，电影感，高清，正面半身像`;
-                    const res = await fetch(IMAGE_API_URL, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ prompt })
-                    });
-                    const data = await res.json();
-                    imageUrl = data.imageUrl || data.url;
-                } else {
-                    // 没配置API时用占位图，不影响流程测试
-                    imageUrl = 'https://picsum.photos/seed/' + Math.random() + '/600/800';
-                }
+                // 直接从人像池匹配真实照片
+                const imageUrl = randomPick(portraitPool[targetGender][selectedTemperament]);
 
                 clearInterval(timer);
                 document.getElementById('progress').style.width = '100%';
