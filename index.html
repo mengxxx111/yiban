@@ -2,409 +2,531 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>一半 - 好的关系，各撑一半</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一半 · 好的关系，各撑一半</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='none' stroke='%23d4af37' stroke-width='6'/%3E%3Ccircle cx='50' cy='50' r='18' fill='%23d4af37'/%3E%3C/svg%3E">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+        :root {
+            --gold: #d4af37;
+            --gold-soft: #f0d060;
+            --gold-dim: rgba(212,175,55,0.55);
+            --ink: #0e0c10;
+            --ink-2: #16131a;
+            --ink-3: #1e1a24;
+            --cream: #f5efe2;
+            --cream-dim: #c9c0ad;
+            --cream-faint: #8b8371;
+            --line: rgba(212,175,55,0.18);
+            --glass: rgba(255,255,255,0.045);
+            --shadow: 0 20px 60px rgba(0,0,0,0.45);
         }
-        *::selection {
-            background: rgba(212,175,55,0.3);
-        }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+        ::selection { background:rgba(212,175,55,0.35); color:#fff; }
+        html,body { height:100%; }
         body {
-            background: radial-gradient(ellipse at top, #2a2118 0%, #18181c 50%, #101014 100%);
-            color: #f0e9d8;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
+            font-family: "PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,BlinkMacSystemFont,sans-serif;
+            background: var(--ink);
+            color: var(--cream);
+            min-height:100vh;
+            display:flex; align-items:center; justify-content:center;
+            position:relative; overflow:hidden;
+            letter-spacing:0.02em;
         }
-        body::before {
-            content: '';
-            position: fixed;
-            top: -20%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 140%;
-            height: 70%;
-            background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: 0;
+        /* ---- 背景星空氛围 ---- */
+        .sky { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+        .sky::before {
+            content:''; position:absolute; inset:0;
+            background:
+                radial-gradient(ellipse 120% 60% at 50% -10%, #241d14 0%, transparent 55%),
+                radial-gradient(ellipse 90% 50% at 80% 110%, #1c2233 0%, transparent 60%),
+                radial-gradient(ellipse 70% 40% at 10% 105%, #241b2e 0%, transparent 55%),
+                linear-gradient(180deg,#0d0b0f 0%,#131019 55%,#0e0c12 100%);
         }
-        .container {
-            width: 100%;
-            max-width: 420px;
-            position: relative;
-            z-index: 1;
+        .sky .star {
+            position:absolute; border-radius:50%;
+            background:#f5efe2; opacity:0;
+            animation: twinkle var(--dur,6s) ease-in-out var(--delay,0s) infinite;
         }
-        .page {
-            display: none;
-            animation: pageFade 0.8s cubic-bezier(0.23,1,0.32,1);
+        @keyframes twinkle {
+            0%,100% { opacity:0; transform:scale(0.6); }
+            50% { opacity:0.85; transform:scale(1); }
         }
-        .page.active {
-            display: block;
+        .sky .halo {
+            position:absolute; border-radius:50%;
+            background:radial-gradient(circle, rgba(212,175,55,0.14) 0%, transparent 65%);
+            animation: haloDrift 14s ease-in-out infinite alternate;
         }
-        @keyframes pageFade {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes charRise {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes haloDrift {
+            from { transform:translateY(-12px); }
+            to { transform:translateY(14px); }
         }
 
-        /* 启动页 */
-        .start-page {
-            text-align: center;
-            padding: 80px 20px;
+        .stage {
+            position:relative; z-index:1;
+            width:100%; max-width:430px; min-height:100vh;
+            display:flex; align-items:center; justify-content:center;
+            padding:28px 22px;
+        }
+        .container { width:100%; }
+        .page { display:none; }
+        .page.active { display:block; animation:pageIn 0.9s cubic-bezier(0.22,1,0.36,1); }
+        @keyframes pageIn {
+            from { opacity:0; transform:translateY(26px) scale(0.985); }
+            to { opacity:1; transform:translateY(0) scale(1); }
+        }
+
+        /* ---- 通用控件 ---- */
+        .btn {
+            width:100%; padding:17px 20px; border:1px solid var(--line);
+            background:linear-gradient(135deg, rgba(212,175,55,0.10), rgba(212,175,55,0.04));
+            color:var(--gold); font-size:15px; letter-spacing:0.35em; cursor:pointer;
+            border-radius:14px; transition:all 0.45s cubic-bezier(0.22,1,0.36,1);
+            font-weight:400; position:relative; overflow:hidden;
+            backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+        }
+        .btn::after {
+            content:''; position:absolute; inset:0;
+            background:linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.14) 45%, transparent 70%);
+            transform:translateX(-120%); transition:transform 0.8s ease;
+        }
+        .btn:hover::after { transform:translateX(120%); }
+        .btn:hover {
+            background:linear-gradient(135deg, #d4af37, #e8c95e);
+            color:#141016; border-color:#d4af37;
+            box-shadow:0 12px 40px rgba(212,175,55,0.28);
+        }
+        .btn.secondary {
+            background:transparent; color:var(--cream-dim);
+            border-color:rgba(255,255,255,0.12);
+        }
+        .btn.secondary:hover {
+            background:rgba(255,255,255,0.07); color:var(--cream);
+            border-color:rgba(255,255,255,0.22); box-shadow:none;
+        }
+
+        .field-label {
+            font-size:12px; color:var(--cream-faint);
+            letter-spacing:0.28em; margin-bottom:12px;
+            display:flex; align-items:center; gap:10px;
+        }
+        .field-label::before {
+            content:''; width:14px; height:1px;
+            background:linear-gradient(to right, var(--gold-dim), transparent);
+        }
+
+        /* ---- 启动页 ---- */
+        .start-page { text-align:center; padding:30px 6px 10px; }
+        .emblem {
+            width:86px; height:86px; margin:0 auto 34px; position:relative;
+        }
+        .emblem svg { width:100%; height:100%; }
+        .emblem .ring { fill:none; stroke:var(--gold); stroke-width:2.4; }
+        .emblem .ring2 { fill:none; stroke:var(--gold-dim); stroke-width:1; opacity:0.7; }
+        .emblem .core { fill:var(--gold); }
+        .emblem .halo-ring { fill:none; stroke:var(--gold); stroke-width:1.2; opacity:0.5; stroke-dasharray:4 6; }
+        .emblem-anim { animation:emblemBreath 3.4s ease-in-out infinite; transform-origin:center; }
+        @keyframes emblemBreath {
+            0%,100% { transform:scale(1); opacity:1; }
+            50% { transform:scale(1.04); opacity:0.92; }
         }
         .logo {
-            font-size: 64px;
-            font-weight: 200;
-            letter-spacing: 16px;
-            margin-bottom: 24px;
-            color: #d4af37;
-            text-shadow: 0 0 40px rgba(212,175,55,0.3);
+            font-size:54px; font-weight:200; letter-spacing:0.42em;
+            color:var(--cream); text-indent:0.42em; margin-bottom:10px;
+            text-shadow:0 0 60px rgba(212,175,55,0.35);
         }
+        .logo .gold { color:var(--gold); }
         .slogan {
-            font-size: 16px;
-            font-weight: 300;
-            color: #a89f8c;
-            margin-bottom: 100px;
-            letter-spacing: 4px;
+            font-size:14px; font-weight:300; color:var(--cream-faint);
+            letter-spacing:0.5em; margin-bottom:52px;
         }
         .divider {
-            width: 30%;
-            height: 1px;
-            background: linear-gradient(to right, transparent, rgba(212,175,55,0.6), transparent);
-            margin: 0 auto 60px;
+            width:64px; height:1px; margin:0 auto 56px;
+            background:linear-gradient(to right, transparent, var(--gold-dim), transparent);
         }
-        .btn {
-            width: 100%;
-            padding: 18px;
-            border: 1px solid rgba(212,175,55,0.5);
-            background: rgba(212,175,55,0.05);
-            color: #d4af37;
-            font-size: 15px;
-            letter-spacing: 6px;
-            cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.23,1,0.32,1);
-            border-radius: 2px;
-            backdrop-filter: blur(10px);
-            will-change: transform;
+        .start-quote {
+            font-size:13px; color:var(--cream-faint); line-height:2.2;
+            letter-spacing:0.14em; margin-bottom:60px; opacity:0.9;
         }
-        .btn:hover {
-            background: #d4af37;
-            color: #18181c;
-            box-shadow: 0 0 30px rgba(212,175,55,0.4);
+        .start-quote em { font-style:normal; color:var(--gold-dim); }
+
+        /* ---- 表单页 ---- */
+        .form-page { padding:8px 2px 6px; }
+        .page-head {
+            text-align:center; margin-bottom:44px;
+        }
+        .page-head .step { font-size:11px; color:var(--gold); letter-spacing:0.42em; margin-bottom:14px; }
+        .page-head h2 {
+            font-size:26px; font-weight:300; letter-spacing:0.2em;
+            color:var(--cream); margin-bottom:12px;
+        }
+        .page-head p { font-size:13px; color:var(--cream-faint); letter-spacing:0.08em; }
+
+        .card {
+            background:var(--glass); border:1px solid var(--line);
+            border-radius:18px; padding:24px 22px; margin-bottom:22px;
+            backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+            box-shadow:var(--shadow);
         }
 
-        /* 表单页 */
-        .form-page h2 {
-            font-size: 20px;
-            font-weight: 300;
-            margin-bottom: 48px;
-            text-align: center;
-            letter-spacing: 4px;
-            color: #d4af37;
+        /* 人种选择 */
+        .race-group { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+        .race-card {
+            padding:16px 6px 14px; text-align:center; cursor:pointer;
+            border:1px solid rgba(255,255,255,0.09); border-radius:14px;
+            background:rgba(255,255,255,0.03);
+            transition:all 0.35s cubic-bezier(0.22,1,0.36,1);
+            position:relative;
         }
-        .form-group {
-            margin-bottom: 32px;
+        .race-card .avatar {
+            width:52px; height:52px; border-radius:50%; margin:0 auto 12px;
+            background-size:cover; background-position:center 22%;
+            border:2px solid rgba(255,255,255,0.12);
+            transition:all 0.35s;
         }
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            color: #8a8070;
-            margin-bottom: 12px;
-            letter-spacing: 2px;
+        .race-card .r-name { font-size:14px; color:var(--cream-dim); letter-spacing:0.14em; }
+        .race-card .r-sub { font-size:10px; color:var(--cream-faint); margin-top:5px; letter-spacing:0.05em; }
+        .race-card.selected {
+            border-color:var(--gold); background:rgba(212,175,55,0.09);
+            box-shadow:0 0 0 1px var(--gold-dim), 0 10px 30px rgba(212,175,55,0.12);
         }
-        .form-group select {
-            width: 100%;
-            padding: 14px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(212,175,55,0.15);
-            color: #f0e9d8;
-            font-size: 15px;
-            border-radius: 2px;
-            outline: none;
-            backdrop-filter: blur(10px);
+        .race-card.selected .avatar { border-color:var(--gold); }
+        .race-card.selected .r-name { color:var(--gold); }
+        .race-card .check {
+            position:absolute; top:8px; right:8px; width:18px; height:18px;
+            border-radius:50%; background:var(--gold); color:#141016;
+            display:flex; align-items:center; justify-content:center;
+            font-size:10px; opacity:0; transform:scale(0.4);
+            transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
         }
-        .form-group select:focus {
-            border-color: #d4af37;
+        .race-card.selected .check { opacity:1; transform:scale(1); }
+
+        select {
+            width:100%; padding:15px 14px;
+            background:rgba(255,255,255,0.04);
+            border:1px solid rgba(255,255,255,0.10); color:var(--cream);
+            font-size:15px; border-radius:12px; outline:none;
+            appearance:none; -webkit-appearance:none;
+            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23d4af37' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
+            background-repeat:no-repeat; background-position:right 16px center;
+            font-family:inherit; letter-spacing:0.05em;
         }
-        .date-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-        }
-        .tag-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
+        select:focus { border-color:var(--gold-dim); background-color:rgba(212,175,55,0.05); }
+        select option { background:#1a1720; color:var(--cream); }
+
+        .date-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+
+        .tag-group { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
         .tag {
-            padding: 14px;
-            text-align: center;
-            border: 1px solid rgba(212,175,55,0.15);
-            background: rgba(255,255,255,0.03);
-            color: #a89f8c;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 2px;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
+            padding:13px 10px; text-align:center; cursor:pointer;
+            border:1px solid rgba(255,255,255,0.09); border-radius:12px;
+            background:rgba(255,255,255,0.03); color:var(--cream-dim);
+            font-size:14px; letter-spacing:0.12em; transition:all 0.3s;
         }
+        .tag:hover { border-color:rgba(212,175,55,0.35); }
         .tag.selected {
-            border-color: #d4af37;
-            color: #d4af37;
-            background: rgba(212,175,55,0.1);
+            border-color:var(--gold); color:var(--gold);
+            background:rgba(212,175,55,0.10);
+            box-shadow:0 6px 20px rgba(212,175,55,0.10);
         }
 
-        /* 加载页 */
-        .loading-page {
-            text-align: center;
-            padding: 100px 20px;
+        /* ---- 加载页 ---- */
+        .loading-page { text-align:center; padding:70px 12px 30px; }
+        .orbit { width:150px; height:150px; margin:0 auto 46px; position:relative; }
+        .orbit .o-ring {
+            position:absolute; inset:0; border-radius:50%;
+            border:1px solid rgba(212,175,55,0.18);
         }
+        .orbit .o-ring:nth-child(2) { inset:14%; border-color:rgba(212,175,55,0.28); border-style:dashed; animation:spin 14s linear infinite; }
+        .orbit .o-ring:nth-child(3) { inset:28%; border-color:rgba(212,175,55,0.40); }
+        .orbit .o-dot {
+            position:absolute; width:8px; height:8px; border-radius:50%; background:var(--gold);
+            top:calc(50% - 4px); left:calc(50% - 4px);
+            box-shadow:0 0 18px rgba(212,175,55,0.8);
+        }
+        .orbit .o-dot.a { animation:spin 4.2s linear infinite; transform-origin:50% 50%; }
+        .orbit .o-dot.b { animation:spin 6.8s linear infinite reverse; transform-origin:50% 50%; }
+        .orbit .o-dot.b::before {
+            content:''; position:absolute; width:4px; height:4px; border-radius:50%;
+            background:var(--gold-soft); top:-22px; left:2px;
+        }
+        @keyframes spin { to { transform:rotate(360deg); } }
         .loading-text {
-            font-size: 15px;
-            color: #a89f8c;
-            margin-bottom: 40px;
-            letter-spacing: 4px;
+            font-size:15px; color:var(--cream-dim); letter-spacing:0.3em; margin-bottom:36px;
         }
-        .progress-bar {
-            width: 100%;
-            height: 1px;
-            background: rgba(212,175,55,0.1);
-            overflow: hidden;
-            margin-bottom: 24px;
+        .progress-track {
+            width:100%; height:2px; background:rgba(255,255,255,0.06);
+            border-radius:2px; overflow:hidden; margin-bottom:26px;
         }
         .progress {
-            height: 100%;
-            background: linear-gradient(to right, #d4af37, #f0d060);
-            width: 0%;
-            transition: width 0.3s;
+            height:100%; width:0%;
+            background:linear-gradient(to right, #d4af37, #f0d060, #fff3c4);
+            border-radius:2px; transition:width 0.3s ease;
+            box-shadow:0 0 14px rgba(212,175,55,0.5);
         }
-        .loading-tip {
-            font-size: 12px;
-            color: #6a6255;
-            letter-spacing: 2px;
-        }
+        .loading-tip { font-size:12px; color:var(--cream-faint); letter-spacing:0.14em; }
 
-        /* 结果页 */
-        .result-page h2 {
-            font-size: 18px;
-            font-weight: 300;
-            text-align: center;
-            margin-bottom: 24px;
-            letter-spacing: 6px;
-            color: #d4af37;
+        /* ---- 结果页 ---- */
+        .result-page { padding:6px 2px 8px; text-align:center; }
+        .result-page .page-head { margin-bottom:26px; }
+        .portrait-frame {
+            position:relative; width:100%; max-width:330px; margin:0 auto 30px;
+            aspect-ratio:3/4; border-radius:20px; overflow:hidden;
+            border:1px solid var(--line);
+            box-shadow:0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(212,175,55,0.08);
         }
-        .result-image {
-            width: 100%;
-            aspect-ratio: 3/4;
-            background: rgba(255,255,255,0.03);
-            border-radius: 4px;
-            margin-bottom: 24px;
-            overflow: hidden;
-            position: relative;
-            border: 1px solid rgba(212,175,55,0.15);
+        .portrait-frame::before {
+            content:''; position:absolute; inset:0; z-index:2; pointer-events:none;
+            border-radius:20px;
+            background:
+                linear-gradient(180deg, rgba(20,16,22,0.18) 0%, transparent 30%, transparent 70%, rgba(20,16,22,0.42) 100%);
         }
-        .result-image::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(212,175,55,0.2), transparent 40%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-            z-index: 2;
+        .portrait-frame::after {
+            content:''; position:absolute; inset:10px; z-index:3; pointer-events:none;
+            border:1px solid rgba(212,175,55,0.35); border-radius:13px;
         }
-        .result-image:hover::before {
-            opacity: 1;
+        .portrait-frame img {
+            width:100%; height:100%; object-fit:cover; display:block;
+            animation:imgReveal 1.2s cubic-bezier(0.22,1,0.36,1);
         }
-        .result-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        @keyframes imgReveal {
+            from { opacity:0; transform:scale(1.06); filter:blur(6px); }
+            to { opacity:1; transform:scale(1); filter:blur(0); }
         }
         .result-tags {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
+            display:flex; justify-content:center; flex-wrap:wrap; gap:9px;
+            margin-bottom:26px;
         }
         .result-tag {
-            padding: 6px 14px;
-            border: 1px solid rgba(212,175,55,0.4);
-            color: #d4af37;
-            font-size: 12px;
-            border-radius: 20px;
-            letter-spacing: 1px;
+            padding:7px 16px; border:1px solid var(--line); color:var(--gold);
+            font-size:12px; letter-spacing:0.16em; border-radius:30px;
+            background:rgba(212,175,55,0.06);
         }
         .meet-tip {
-            background: rgba(212,175,55,0.05);
-            border-left: 1px solid #d4af37;
-            padding: 18px;
-            margin-bottom: 30px;
-            font-size: 14px;
-            line-height: 1.8;
-            color: #c8c0b0;
-            border-radius: 0 2px 2px 0;
+            background:linear-gradient(135deg, rgba(212,175,55,0.08), rgba(255,255,255,0.02));
+            border:1px solid var(--line); border-radius:16px;
+            padding:22px 20px; margin-bottom:28px; text-align:left;
+            font-size:14px; line-height:2.1; color:var(--cream-dim);
         }
-        .meet-tip strong {
-            color: #d4af37;
-            font-weight: normal;
-            letter-spacing: 2px;
+        .meet-tip .tip-title {
+            color:var(--gold); font-size:12px; letter-spacing:0.3em; margin-bottom:8px;
         }
+        .meet-tip .tip-line { color:var(--cream); font-size:15px; letter-spacing:0.05em; }
+        .meet-tip .tip-line .gold { color:var(--gold); }
         .result-desc {
-            font-size: 12px;
-            color: #6a6255;
-            text-align: center;
-            margin-bottom: 36px;
-            line-height: 2;
-            letter-spacing: 1px;
+            font-size:12px; color:var(--cream-faint); text-align:center;
+            margin-bottom:30px; line-height:2.1; letter-spacing:0.08em;
         }
-        .btn-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        .btn-secondary {
-            border-color: rgba(255,255,255,0.1);
-            color: #a89f8c;
-            background: transparent;
-        }
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.05);
-            color: #f0e9d8;
-            box-shadow: none;
-        }
+        .btn-group { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
         .footer-text {
-            text-align: center;
-            font-size: 11px;
-            color: #4a4438;
-            margin-top: 48px;
-            letter-spacing: 2px;
+            text-align:center; font-size:11px; color:var(--cream-faint);
+            margin-top:34px; letter-spacing:0.2em; opacity:0.6;
+        }
+        .toast {
+            position:fixed; left:50%; bottom:60px; transform:translateX(-50%) translateY(20px);
+            background:rgba(20,16,22,0.92); border:1px solid var(--line);
+            color:var(--cream); font-size:13px; letter-spacing:0.1em;
+            padding:13px 24px; border-radius:30px; z-index:99;
+            opacity:0; pointer-events:none; transition:all 0.4s cubic-bezier(0.22,1,0.36,1);
+        }
+        .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+        @media (min-width:600px) {
+            .stage { padding:40px 30px; }
+            .card { padding:28px 26px; }
+        }
+        @media (max-width:360px) {
+            .logo { font-size:46px; }
+            .race-card .avatar { width:44px; height:44px; }
+            .card { padding:20px 16px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 启动页 -->
-        <div class="page start-page active" id="page-start">
-            <div class="logo">一半</div>
-            <div class="slogan">好的关系，各撑一半</div>
-            <div class="divider"></div>
-            <button class="btn" onclick="goPage('page-form')">抽取你的另一半</button>
-        </div>
+    <div class="sky" id="sky"></div>
 
-        <!-- 填写页 -->
-        <div class="page form-page" id="page-form">
-            <h2>告诉我你的样子</h2>
-            
-            <div class="form-group">
-                <label>你的生日</label>
-                <div class="date-row">
-                    <select id="birth-year">
-                        <option value="">年</option>
-                    </select>
-                    <select id="birth-month">
-                        <option value="">月</option>
-                    </select>
-                    <select id="birth-day">
-                        <option value="">日</option>
+    <div class="stage">
+        <div class="container">
+            <!-- ===== 启动页 ===== -->
+            <div class="page start-page active" id="page-start">
+                <div class="emblem">
+                    <svg viewBox="0 0 100 100" class="emblem-anim">
+                        <circle class="ring" cx="50" cy="50" r="46"/>
+                        <circle class="ring2" cx="50" cy="50" r="38"/>
+                        <circle class="halo-ring" cx="50" cy="50" r="30"/>
+                        <circle class="core" cx="50" cy="50" r="11"/>
+                    </svg>
+                </div>
+                <h1 class="logo"><span class="gold">一</span>半</h1>
+                <p class="slogan">好的关系，各撑一半</p>
+                <div class="divider"></div>
+                <p class="start-quote">人海茫茫，<em>总有人</em>与你刚好凑成圆满</p>
+                <button class="btn" onclick="goPage('page-form')">抽取你的另一半</button>
+            </div>
+
+            <!-- ===== 填写页 ===== -->
+            <div class="page form-page" id="page-form">
+                <div class="page-head">
+                    <div class="step">STEP 01</div>
+                    <h2>告诉我你的样子</h2>
+                    <p>我们替你想象，遇见那个人的模样</p>
+                </div>
+
+                <div class="card">
+                    <div class="field-label">你的偏好</div>
+                    <div class="race-group" id="race-group">
+                        <div class="race-card" data-race="eur" onclick="selectRace('eur')">
+                            <div class="avatar" style="background-image:url('assets/final_eur-female-25s-sunny.png')"></div>
+                            <div class="r-name">欧裔</div>
+                            <div class="r-sub">欧洲气质</div>
+                            <div class="check">✓</div>
+                        </div>
+                        <div class="race-card" data-race="asian" onclick="selectRace('asian')">
+                            <div class="avatar" style="background-image:url('assets/final_female-25s-sunny.png')"></div>
+                            <div class="r-name">亚裔</div>
+                            <div class="r-sub">东方韵味</div>
+                            <div class="check">✓</div>
+                        </div>
+                        <div class="race-card" data-race="afr" onclick="selectRace('afr')">
+                            <div class="avatar" style="background-image:url('assets/final_afr-female-25s-sunny.png')"></div>
+                            <div class="r-name">非裔</div>
+                            <div class="r-sub">大地之美</div>
+                            <div class="check">✓</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="field-label">你的生日</div>
+                    <div class="date-row">
+                        <select id="birth-year"><option value="">年</option></select>
+                        <select id="birth-month"><option value="">月</option></select>
+                        <select id="birth-day"><option value="">日</option></select>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="field-label">你的性别</div>
+                    <select id="gender">
+                        <option value="male">男生</option>
+                        <option value="female">女生</option>
                     </select>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label>你的性别</label>
-                <select id="gender">
-                    <option value="male">男</option>
-                    <option value="female">女</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>你偏好的气质</label>
-                <div class="tag-group" id="temperament-group">
-                    <div class="tag" data-value="清冷">清冷</div>
-                    <div class="tag" data-value="阳光">阳光</div>
-                    <div class="tag" data-value="温润">温润</div>
-                    <div class="tag" data-value="疏离">疏离</div>
+                <div class="card">
+                    <div class="field-label">你偏好的气质</div>
+                    <div class="tag-group" id="temperament-group">
+                        <div class="tag" data-value="清冷">清冷</div>
+                        <div class="tag" data-value="阳光">阳光</div>
+                        <div class="tag" data-value="温润">温润</div>
+                        <div class="tag" data-value="疏离">疏离</div>
+                    </div>
                 </div>
+
+                <button class="btn" onclick="generate()">开始拼凑</button>
             </div>
 
-            <button class="btn" style="margin-top: 24px;" onclick="generate()">开始拼凑</button>
-        </div>
-
-        <!-- 加载页 -->
-        <div class="page loading-page" id="page-loading">
-            <div class="loading-text">正在人潮里，帮你找那一半</div>
-            <div class="progress-bar">
-                <div class="progress" id="progress"></div>
-            </div>
-            <div class="loading-tip">你做好你的一半，剩下的，看遇见谁</div>
-        </div>
-
-        <!-- 结果页 -->
-        <div class="page result-page" id="page-result">
-            <h2>你的另一半</h2>
-            
-            <div class="result-image" id="result-image">
-                <span style="color:#555;">生成中...</span>
+            <!-- ===== 加载页 ===== -->
+            <div class="page loading-page" id="page-loading">
+                <div class="orbit">
+                    <div class="o-ring"></div>
+                    <div class="o-ring"></div>
+                    <div class="o-ring"></div>
+                    <div class="o-dot a"></div>
+                    <div class="o-dot b"></div>
+                </div>
+                <p class="loading-text">正在人潮里，帮你找那一半</p>
+                <div class="progress-track"><div class="progress" id="progress"></div></div>
+                <p class="loading-tip">你做好你的一半，剩下的，看遇见谁</p>
             </div>
 
-            <div class="result-tags" id="result-tags"></div>
+            <!-- ===== 结果页 ===== -->
+            <div class="page result-page" id="page-result">
+                <div class="page-head">
+                    <div class="step">STEP 02</div>
+                    <h2>你的另一半</h2>
+                    <p id="result-sub">正在向你走来</p>
+                </div>
 
-            <div class="meet-tip" id="meet-tip"></div>
+                <div class="portrait-frame" id="portrait-frame">
+                    <img id="result-img" alt="你的另一半" style="display:none;">
+                </div>
 
-            <p class="result-desc">
-                感情里最公平的是，<br>
-                我们都只能决定自己的那一半
-            </p>
+                <div class="result-tags" id="result-tags"></div>
 
-            <div class="btn-group">
-                <button class="btn btn-secondary" onclick="generate()">再抽一次</button>
-                <button class="btn" onclick="saveCard()">保存图片</button>
+                <div class="meet-tip">
+                    <div class="tip-title">今日相遇提示</div>
+                    <div id="meet-tip"></div>
+                </div>
+
+                <p class="result-desc">
+                    感情里最公平的是，<br>
+                    我们都只能决定自己的那一半
+                </p>
+
+                <div class="btn-group">
+                    <button class="btn secondary" onclick="generate()">再抽一次</button>
+                    <button class="btn" onclick="saveCard()">保存图片</button>
+                </div>
+
+                <button class="btn secondary" onclick="goXiaojia()">已经遇到TA了？去小家说第一句话</button>
+
+                <p class="footer-text">AI 生成 · 内容仅供娱乐参考</p>
             </div>
-
-            <button class="btn btn-secondary" onclick="goXiaojia()">已经遇到TA了？去小家说第一句话</button>
-
-            <p class="footer-text">内容仅供娱乐参考</p>
         </div>
     </div>
 
+    <div class="toast" id="toast"></div>
+
     <script>
-        // 人像库
-        const portraitPool = {
-            'male': {
-                '清冷': ['https://aka.doubaocdn.com/s/DTpHwCwXQU'],
-                '阳光': ['https://aka.doubaocdn.com/s/4uFw6yfTE7'],
-                '温润': ['https://aka.doubaocdn.com/s/JrQyvLLJu2'],
-                '疏离': ['https://aka.doubaocdn.com/s/NePzLYcYFv']
+        // ===== 星空背景 =====
+        (function(){
+            const sky = document.getElementById('sky');
+            for (let i=0;i<42;i++){
+                const s=document.createElement('div');
+                s.className='star';
+                const sz=(Math.random()*2+1).toFixed(1);
+                s.style.width=sz+'px'; s.style.height=sz+'px';
+                s.style.left=(Math.random()*100).toFixed(1)+'%';
+                s.style.top=(Math.random()*100).toFixed(1)+'%';
+                s.style.setProperty('--dur',(Math.random()*6+4).toFixed(1)+'s');
+                s.style.setProperty('--delay',(Math.random()*6).toFixed(1)+'s');
+                sky.appendChild(s);
+            }
+            for (let i=0;i<3;i++){
+                const h=document.createElement('div');
+                h.className='halo';
+                const size=Math.random()*260+200;
+                h.style.width=size+'px'; h.style.height=size+'px';
+                h.style.left=(Math.random()*100).toFixed(1)+'%';
+                h.style.top=(Math.random()*100).toFixed(1)+'%';
+                h.style.setProperty('--delay',(Math.random()*5).toFixed(1)+'s');
+                sky.appendChild(h);
+            }
+        })();
+
+        // ===== 人像库（真实图池） =====
+        // 命名约定：assets/final_{race}-{gender}-{age}s-{mood}.png
+        // race: 无前缀=亚裔 eur=欧裔 afr=非裔；gender: male/female；mood: cool/sunny
+        const PORTRAITS = {
+            'eur': {
+                male:   { '清冷':['assets/final_eur-male-25s-cool.png'],   '阳光':['assets/final_eur-male-25s-sunny.png'],   '温润':['assets/final_eur-male-25s-cool.png'],   '疏离':['assets/final_eur-male-25s-sunny.png'] },
+                female: { '清冷':['assets/final_eur-female-25s-cool.png'], '阳光':['assets/final_eur-female-25s-sunny.png'], '温润':['assets/final_eur-female-25s-cool.png'], '疏离':['assets/final_eur-female-25s-sunny.png'] }
             },
-            'female': {
-                '清冷': ['https://aka.doubaocdn.com/s/XjohHoXKVQ'],
-                '阳光': ['https://aka.doubaocdn.com/s/1trgIhhgon'],
-                '温润': ['https://aka.doubaocdn.com/s/tVBtLL1oMx'],
-                '疏离': ['https://aka.doubaocdn.com/s/1iXM9Dn4p3']
+            'asian': {
+                male:   { '清冷':['assets/final_male-25s-cool.png','assets/final_male-35s-cool.png'],   '阳光':['assets/final_male-25s-sunny.png','assets/final_male-35s-sunny.png'],   '温润':['assets/final_male-25s-cool.png','assets/final_male-35s-sunny.png'],   '疏离':['assets/final_male-25s-sunny.png','assets/final_male-35s-cool.png'] },
+                female: { '清冷':['assets/final_female-25s-cool.png','assets/final_female-35s-cool.png'], '阳光':['assets/final_female-25s-sunny.png','assets/final_female-35s-sunny.png'], '温润':['assets/final_female-25s-cool.png','assets/final_female-35s-sunny.png'], '疏离':['assets/final_female-25s-sunny.png','assets/final_female-35s-cool.png'] }
+            },
+            'afr': {
+                male:   { '清冷':['assets/final_afr-male-25s-cool.png'],   '阳光':['assets/final_afr-male-25s-sunny.png'],   '温润':['assets/final_afr-male-25s-cool.png'],   '疏离':['assets/final_afr-male-25s-sunny.png'] },
+                female: { '清冷':['assets/final_afr-female-25s-cool.png'], '阳光':['assets/final_afr-female-25s-sunny.png'], '温润':['assets/final_afr-female-25s-cool.png'], '疏离':['assets/final_afr-female-25s-sunny.png'] }
             }
         };
 
-        // 相遇指引池
-        const timePool = ['本周六傍晚', '周日午后', '工作日清晨', '周五深夜', '周三午后', '雨天的下午'];
-        const placePool = ['独立书店', '通勤地铁', '街角便利店', '电影院', '咖啡馆', 'livehouse', '公园步道', '旧书馆'];
-        const crowdPool = ['独自出行的人', '朋友的朋友聚会', '穿浅色衣服的人', '手里拿着书的人', '戴耳机的人'];
+        const timePool = ['本周六傍晚','周日午后','工作日清晨','周五深夜','周三午后','雨天的下午'];
+        const placePool = ['独立书店','通勤地铁','街角便利店','电影院','咖啡馆','livehouse','公园步道','旧书馆'];
+        const crowdPool = ['独自出行的人','朋友的朋友聚会','穿浅色衣服的人','手里拿着书的人','戴耳机的人'];
+        const ageText = { '25': '二十岁后半', '35': '三十岁后半' };
 
-        // 星座
         const zodiacSigns = [
             {name:'摩羯座',start:'12-22',end:'01-19'},{name:'水瓶座',start:'01-20',end:'02-18'},
             {name:'双鱼座',start:'02-19',end:'03-20'},{name:'白羊座',start:'03-21',end:'04-19'},
@@ -415,116 +537,108 @@
         ];
 
         // 初始化生日下拉
-        const yearSelect = document.getElementById('birth-year');
-        for (let y = 2008; y >= 1970; y--) {
-            const opt = document.createElement('option');
-            opt.value = y; opt.text = y + '年'; yearSelect.add(opt);
-        }
-        const monthSelect = document.getElementById('birth-month');
-        for (let m = 1; m <= 12; m++) {
-            const opt = document.createElement('option');
-            opt.value = m.toString().padStart(2,'0'); opt.text = m + '月'; monthSelect.add(opt);
-        }
-        const daySelect = document.getElementById('birth-day');
-        for (let d = 1; d <= 31; d++) {
-            const opt = document.createElement('option');
-            opt.value = d.toString().padStart(2,'0'); opt.text = d + '日'; daySelect.add(opt);
-        }
+        (function(){
+            const ys=document.getElementById('birth-year');
+            for(let y=2008;y>=1970;y--){ const o=document.createElement('option'); o.value=y; o.text=y+'年'; ys.add(o); }
+            const ms=document.getElementById('birth-month');
+            for(let m=1;m<=12;m++){ const o=document.createElement('option'); o.value=String(m).padStart(2,'0'); o.text=m+'月'; ms.add(o); }
+            const ds=document.getElementById('birth-day');
+            for(let d=1;d<=31;d++){ const o=document.createElement('option'); o.value=String(d).padStart(2,'0'); o.text=d+'日'; ds.add(o); }
+        })();
 
-        // 文字逐字入场
-        function splitText(el) {
-            const text = el.innerText; el.innerHTML = '';
-            [...text].forEach((ch,i) => {
-                const span = document.createElement('span');
-                span.style.display = 'inline-block'; span.style.opacity = '0';
-                span.style.animation = `charRise 0.8s cubic-bezier(0.23,1,0.32,1) forwards ${i*0.1}s`;
-                span.innerText = ch === ' ' ? '\u00A0' : ch; el.appendChild(span);
-            });
-        }
-        splitText(document.querySelector('.logo'));
-        splitText(document.querySelector('.slogan'));
-
-        // 磁吸按钮
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('mousemove', e => {
-                const r = btn.getBoundingClientRect();
-                const x = e.clientX - r.left - r.width/2;
-                const y = e.clientY - r.top - r.height/2;
-                btn.style.transform = `translate(${x*0.15}px, ${y*0.15}px)`;
-            });
-            btn.addEventListener('mouseleave', () => btn.style.transform = 'translate(0,0)');
-        });
-
-        // 聚光灯
-        document.querySelectorAll('.result-image').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const r = card.getBoundingClientRect();
-                card.style.setProperty('--x', `${e.clientX - r.left}px`);
-                card.style.setProperty('--y', `${e.clientY - r.top}px`);
-            });
-        });
-
-        // 标签选择
+        let selectedRace = 'asian';
         let selectedTemperament = '';
-        document.querySelectorAll('#temperament-group .tag').forEach(tag => {
-            tag.addEventListener('click', () => {
-                document.querySelectorAll('#temperament-group .tag').forEach(t => t.classList.remove('selected'));
+
+        function selectRace(race){
+            selectedRace = race;
+            document.querySelectorAll('#race-group .race-card').forEach(c=>{
+                c.classList.toggle('selected', c.dataset.race===race);
+            });
+        }
+        selectRace('asian');
+
+        document.querySelectorAll('#temperament-group .tag').forEach(tag=>{
+            tag.addEventListener('click',()=>{
+                document.querySelectorAll('#temperament-group .tag').forEach(t=>t.classList.remove('selected'));
                 tag.classList.add('selected');
                 selectedTemperament = tag.dataset.value;
             });
         });
 
-        function goPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        function goPage(id){
+            document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
-        function getZodiac(birthday) {
-            if (!birthday) return '未知';
-            const md = birthday.slice(5);
-            for (let s of zodiacSigns) if (md >= s.start && md <= s.end) return s.name;
+
+        function getZodiac(birthday){
+            if(!birthday) return '未知';
+            const md=birthday.slice(5);
+            for(const s of zodiacSigns) if(md>=s.start&&md<=s.end) return s.name;
             return '摩羯座';
         }
-        function randomPick(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
+        function randomPick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-        async function generate() {
-            const year = document.getElementById('birth-year').value;
-            const month = document.getElementById('birth-month').value;
-            const day = document.getElementById('birth-day').value;
-            const gender = document.getElementById('gender').value;
-            if (!year || !month || !day) { alert('请选择完整生日'); return; }
-            if (!selectedTemperament) { alert('请选择偏好气质'); return; }
+        function showToast(msg){
+            const t=document.getElementById('toast');
+            t.textContent=msg; t.classList.add('show');
+            clearTimeout(t._timer);
+            t._timer=setTimeout(()=>t.classList.remove('show'),2200);
+        }
+
+        function generate(){
+            const year=document.getElementById('birth-year').value;
+            const month=document.getElementById('birth-month').value;
+            const day=document.getElementById('birth-day').value;
+            const gender=document.getElementById('gender').value;
+            if(!year||!month||!day){ showToast('请先选择完整生日'); return; }
+            if(!selectedTemperament){ showToast('请选择偏好气质'); return; }
 
             goPage('page-loading');
-            let progress = 0;
-            const timer = setInterval(() => {
-                progress += Math.random()*15;
-                if (progress > 90) progress = 90;
-                document.getElementById('progress').style.width = progress + '%';
-            }, 200);
+            let progress=0;
+            const timer=setInterval(()=>{
+                progress+=Math.random()*15;
+                if(progress>90) progress=90;
+                document.getElementById('progress').style.width=progress+'%';
+            },200);
 
-            try {
-                const zodiac = getZodiac(`${year}-${month}-${day}`);
-                const targetGender = gender === 'male' ? 'female' : 'male';
-                const targetGenderText = gender === 'male' ? '女性' : '男性';
-                const time = randomPick(timePool), place = randomPick(placePool), crowd = randomPick(crowdPool);
-                const tags = [zodiac, selectedTemperament, targetGenderText];
-                const imageUrl = randomPick(portraitPool[targetGender][selectedTemperament]);
+            try{
+                const zodiac=getZodiac(year+'-'+month+'-'+day);
+                const targetGender=gender==='male'?'female':'male';
+                const targetGenderText=gender==='male'?'女性':'男性';
+                const time=randomPick(timePool), place=randomPick(placePool), crowd=randomPick(crowdPool);
+                const pool=PORTRAITS[selectedRace][targetGender][selectedTemperament]||
+                           PORTRAITS[selectedRace][targetGender]['清冷'];
+                const imageUrl=randomPick(pool);
+                const ageDetect=imageUrl.match(/-(\d+)s-/);
+                const ageLabel=ageDetect&&ageText[ageDetect[1]]?ageText[ageDetect[1]]:null;
+                const raceLabel={eur:'欧裔',asian:'亚裔',afr:'非裔'}[selectedRace];
+                const tags=[raceLabel,targetGenderText,selectedTemperament,zodiac];
+                if(ageLabel) tags.push(ageLabel);
 
                 clearInterval(timer);
-                document.getElementById('progress').style.width = '100%';
+                document.getElementById('progress').style.width='100%';
+                document.getElementById('result-sub').textContent=raceLabel+' · '+targetGenderText+' · '+selectedTemperament;
 
-                setTimeout(() => {
-                    document.getElementById('result-image').innerHTML = `<img src="${imageUrl}" alt="另一半">`;
-                    document.getElementById('result-tags').innerHTML = tags.map(t => `<span class="result-tag">${t}</span>`).join('');
-                    document.getElementById('meet-tip').innerHTML = `<strong>今日相遇提示</strong><br>${time} · ${place}<br>留意${crowd}`;
+                setTimeout(()=>{
+                    const img=document.getElementById('result-img');
+                    img.src=imageUrl;
+                    img.style.display='block';
+                    img.onload=()=>{ img.style.animation='none'; void img.offsetWidth; img.style.animation='imgReveal 1.2s cubic-bezier(0.22,1,0.36,1)'; };
+                    document.getElementById('result-tags').innerHTML=tags.map(t=>'<span class="result-tag">'+t+'</span>').join('');
+                    document.getElementById('meet-tip').innerHTML=
+                        '<div class="tip-line">'+time+' · <span class="gold">'+place+'</span></div>'+
+                        '<div class="tip-line">留意'+crowd+'</div>';
                     goPage('page-result');
-                }, 400);
-            } catch(e) {
-                clearInterval(timer); alert('生成失败，请重试'); goPage('page-form');
+                },450);
+            }catch(e){
+                clearInterval(timer);
+                showToast('生成失败，请重试');
+                goPage('page-form');
             }
         }
-        function goXiaojia() { window.open('https://你的小家地址', '_blank'); }
-        function saveCard() { alert('长按图片即可保存'); }
+
+        function goXiaojia(){ window.open('https://yijia.netlify.app','_blank'); }
+        function saveCard(){ showToast('长按图片即可保存'); }
     </script>
 </body>
 </html>
