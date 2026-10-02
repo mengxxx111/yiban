@@ -29,7 +29,7 @@
             color: var(--cream);
             min-height:100vh;
             display:flex; align-items:center; justify-content:center;
-            position:relative; overflow:hidden;
+            position:relative; overflow-x:hidden; overflow-y:auto;
             letter-spacing:0.02em;
         }
         /* ---- 背景星空氛围 ---- */
@@ -64,10 +64,10 @@
         .stage {
             position:relative; z-index:1;
             width:100%; max-width:430px; min-height:100vh;
-            display:flex; align-items:center; justify-content:center;
+            display:flex;
             padding:28px 22px;
         }
-        .container { width:100%; }
+        .container { width:100%; margin:auto; }
         .page { display:none; }
         .page.active { display:block; animation:pageIn 0.9s cubic-bezier(0.22,1,0.36,1); }
         @keyframes pageIn {
