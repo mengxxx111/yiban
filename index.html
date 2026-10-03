@@ -12,9 +12,9 @@
             --gold: #c8a86a;
             --gold-soft: #e3c890;
             --gold-dim: rgba(200,168,106,0.45);
-            --ink: #0e0c12;
-            --ink-2: #14121a;
-            --ink-3: #1b1822;
+            --ink: #0c0a10;
+            --ink-2: #12101a;
+            --ink-3: #191624;
             --cream: #efe8da;
             --cream-dim: #b8af9d;
             --cream-faint: #8a8171;
@@ -22,69 +22,98 @@
             --line-strong: rgba(200,168,106,0.42);
             --card-bg: rgba(255,255,255,0.025);
             --shadow: 0 18px 50px rgba(0,0,0,0.4);
+            --ease-out: cubic-bezier(0.16,1,0.3,1);
+            --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
         }
         * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
         ::selection { background:rgba(200,168,106,0.3); color:#fff; }
+        html { scroll-behavior:smooth; }
         html,body { height:100%; }
         body {
             font-family: "Noto Sans SC","PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif;
             background: var(--ink);
             color: var(--cream);
             min-height:100vh;
-            display:flex; align-items:center; justify-content:center;
-            position:relative; overflow-x:hidden; overflow-y:auto;
+            position:relative; overflow-x:hidden;
             letter-spacing:0.02em;
             font-weight:300;
         }
-        /* ---- 静谧夜空背景（降AI感：无粒子动画，只有极淡的静态光晕） ---- */
+        /* ===== 自定义光标（仅桌面指针设备） ===== */
+        .cursor-dot, .cursor-ring {
+            position:fixed; top:-100px; left:-100px; pointer-events:none;
+            border-radius:50%; z-index:9999; display:none;
+        }
+        body.custom-cursor .cursor-dot { display:block; }
+        body.custom-cursor .cursor-ring { display:block; }
+        .cursor-dot {
+            width:7px; height:7px; background:var(--gold);
+            transform:translate(-50%,-50%);
+            box-shadow:0 0 12px rgba(200,168,106,0.5);
+        }
+        .cursor-ring {
+            width:32px; height:32px;
+            border:1px solid rgba(200,168,106,0.45);
+            transform:translate(-50%,-50%);
+            transition:width 0.3s var(--ease-out), height 0.3s var(--ease-out), border-color 0.3s, opacity 0.3s;
+        }
+        body.custom-cursor .cursor-ring.grow {
+            width:52px; height:52px;
+            border-color:rgba(200,168,106,0.85);
+            background:rgba(200,168,106,0.06);
+        }
+        body.custom-cursor .cursor-ring.hide { opacity:0; }
+
+        /* ===== 静谧夜空背景 ===== */
         .sky { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
         .sky::before {
             content:''; position:absolute; inset:0;
             background:
                 radial-gradient(ellipse 120% 55% at 50% -8%, #221c12 0%, transparent 55%),
                 radial-gradient(ellipse 85% 45% at 85% 108%, #151c2b 0%, transparent 60%),
-                linear-gradient(180deg,#0c0a10 0%,#100e16 55%,#0d0b11 100%);
+                linear-gradient(180deg,#0a080e 0%,#0f0d15 55%,#0c0a10 100%);
         }
         .sky::after {
             content:''; position:absolute; inset:0;
             background:
-                radial-gradient(circle at 22% 18%, rgba(200,168,106,0.05) 0%, transparent 30%),
-                radial-gradient(circle at 78% 72%, rgba(200,168,106,0.045) 0%, transparent 32%);
+                radial-gradient(circle at 20% 16%, rgba(200,168,106,0.045) 0%, transparent 28%),
+                radial-gradient(circle at 80% 74%, rgba(200,168,106,0.04) 0%, transparent 30%);
         }
 
         .stage {
             position:relative; z-index:1;
-            width:100%; max-width:430px; min-height:100vh;
-            display:flex;
-            padding:30px 24px;
+            width:100%; max-width:440px; min-height:100vh;
+            display:flex; margin:0 auto;
+            padding:32px 24px;
         }
         .container { width:100%; margin:auto; }
         .page { display:none; }
-        .page.active { display:block; animation:pageIn 0.8s cubic-bezier(0.22,1,0.36,1); }
-        @keyframes pageIn {
-            from { opacity:0; transform:translateY(18px); }
-            to { opacity:1; transform:translateY(0); }
+        .page.active { display:block; }
+        .page-head { text-align:center; margin-bottom:38px; }
+        .page-head .step { font-size:10px; color:var(--gold); letter-spacing:0.5em; margin-bottom:16px; }
+        .page-head h2 {
+            font-family:"Noto Serif SC",serif;
+            font-size:24px; font-weight:400; letter-spacing:0.14em;
+            color:var(--cream); margin-bottom:10px;
         }
+        .page-head p { font-size:12px; color:var(--cream-faint); letter-spacing:0.08em; }
 
-        /* ---- 通用控件（克制：细描边 + 低饱和金） ---- */
+        /* ===== 通用按钮（磁吸目标） ===== */
         .btn {
             width:100%; padding:16px 20px;
             border:1px solid var(--line-strong);
             background:transparent;
             color:var(--gold); font-size:14px; letter-spacing:0.32em; cursor:pointer;
-            border-radius:2px; transition:all 0.4s ease;
-            font-weight:300; font-family:inherit;
-            text-indent:0.32em;
+            border-radius:2px; transition:background 0.4s, color 0.4s, border-color 0.4s, box-shadow 0.4s;
+            font-weight:300; font-family:inherit; text-indent:0.32em;
+            position:relative; display:inline-block;
         }
         .btn:hover {
             background:linear-gradient(120deg, #c8a86a, #dcc089);
             color:#141016; border-color:#c8a86a;
-            box-shadow:0 10px 30px rgba(200,168,106,0.18);
+            box-shadow:0 12px 34px rgba(200,168,106,0.2);
         }
         .btn.secondary {
-            color:var(--cream-dim);
-            border-color:rgba(255,255,255,0.10);
-            text-indent:0.32em;
+            color:var(--cream-dim); border-color:rgba(255,255,255,0.10);
         }
         .btn.secondary:hover {
             background:rgba(255,255,255,0.05); color:var(--cream);
@@ -101,55 +130,129 @@
             background:linear-gradient(to right, var(--gold-dim), transparent);
         }
 
-        /* ---- 启动页（信息安静：一个徽记、一句名、一个按钮） ---- */
-        .start-page { text-align:center; padding:34px 8px 12px; }
+        /* ===== 启动页 ===== */
+        .start-page { text-align:center; padding:36px 8px 30px; }
         .emblem {
-            width:74px; height:74px; margin:0 auto 38px; position:relative;
+            width:70px; height:70px; margin:0 auto 36px;
         }
         .emblem svg { width:100%; height:100%; }
         .emblem .ring { fill:none; stroke:var(--gold); stroke-width:2.2; }
         .emblem .ring2 { fill:none; stroke:var(--gold-dim); stroke-width:1; opacity:0.65; }
         .emblem .core { fill:var(--gold); }
         .emblem .halo-ring { fill:none; stroke:var(--gold); stroke-width:1; opacity:0.35; stroke-dasharray:3 7; }
-        .logo {
+        .emblem-wrap { opacity:0; transform:scale(0.92); animation:emblemIn 1s var(--ease-out) forwards; }
+        @keyframes emblemIn { to { opacity:1; transform:scale(1); } }
+
+        .logo-line {
             font-family:"Noto Serif SC",serif;
-            font-size:52px; font-weight:300; letter-spacing:0.3em;
-            color:var(--cream); text-indent:0.3em; margin-bottom:16px;
+            font-size:54px; font-weight:300; letter-spacing:0.28em;
+            color:var(--cream); margin-bottom:14px;
         }
-        .logo .gold { color:var(--gold); }
+        .logo-line .char-mask { display:inline-block; overflow:hidden; vertical-align:bottom; }
+        .logo-line .char {
+            display:inline-block; transform:translateY(112%);
+        }
+        .logo-line .char.up { animation:charUp 0.85s var(--ease-out) forwards; }
+        @keyframes charUp { to { transform:translateY(0); } }
+        .logo-line .gold { color:var(--gold); }
+
         .slogan {
             font-size:13px; font-weight:300; color:var(--cream-faint);
-            letter-spacing:0.52em; text-indent:0.52em; margin-bottom:44px;
+            letter-spacing:0.52em; text-indent:0.52em; margin-bottom:40px;
+            opacity:0; animation:fadeUp 0.9s var(--ease-out) 0.5s forwards;
         }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
         .start-quote {
             font-family:"Noto Serif SC",serif;
             font-size:14px; color:var(--cream-dim); line-height:2.2;
-            letter-spacing:0.14em; margin-bottom:48px;
+            letter-spacing:0.14em; margin-bottom:44px;
+            opacity:0; animation:fadeUp 0.9s var(--ease-out) 0.8s forwards;
         }
         .start-quote em { font-style:normal; color:var(--gold); }
-        .divider {
-            width:44px; height:1px; margin:0 auto 44px;
-            background:linear-gradient(to right, transparent, var(--gold-dim), transparent);
-        }
+        .start-cta { opacity:0; animation:fadeUp 0.9s var(--ease-out) 1.1s forwards; }
 
-        /* ---- 表单页（三卡 + 坐标，全部轻描边） ---- */
-        .form-page { padding:6px 2px 4px; }
-        .page-head { text-align:center; margin-bottom:38px; }
-        .page-head .step { font-size:10px; color:var(--gold); letter-spacing:0.5em; margin-bottom:16px; }
-        .page-head h2 {
+        /* 无缝跑马灯 */
+        .marquee {
+            margin-top:44px; overflow:hidden; white-space:nowrap;
+            border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+            padding:11px 0; opacity:0; animation:fadeUp 0.9s var(--ease-out) 1.3s forwards;
+        }
+        .marquee-track {
+            display:inline-block; white-space:nowrap;
+            animation:marqueeMove 26s linear infinite;
+            will-change:transform;
+        }
+        .marquee:hover .marquee-track { animation-play-state:paused; }
+        @keyframes marqueeMove { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+        .marquee-item {
+            display:inline-block; font-size:11px; color:var(--cream-faint);
+            letter-spacing:0.34em; margin-right:56px;
+        }
+        .marquee-item .gold { color:var(--gold-dim); }
+
+        /* ===== 横向钉住画廊（启动页下方） ===== */
+        .gallery-zone {
+            position:relative; width:100%; height:88vh;
+            display:flex; flex-direction:column; justify-content:center;
+            overflow:hidden;
+        }
+        .gallery-head {
+            text-align:center; margin-bottom:34px; padding:0 24px;
+        }
+        .gallery-head .g-step { font-size:10px; color:var(--gold); letter-spacing:0.5em; margin-bottom:12px; }
+        .gallery-head h3 {
             font-family:"Noto Serif SC",serif;
-            font-size:24px; font-weight:400; letter-spacing:0.14em;
-            color:var(--cream); margin-bottom:10px;
+            font-size:22px; font-weight:400; letter-spacing:0.16em; color:var(--cream);
+            margin-bottom:10px;
         }
-        .page-head p { font-size:12px; color:var(--cream-faint); letter-spacing:0.08em; }
+        .gallery-head p { font-size:12px; color:var(--cream-faint); letter-spacing:0.1em; }
+        .gallery-viewport { overflow:hidden; }
+        .gallery-track {
+            display:flex; gap:22px; padding:0 max(8vw,40px);
+            will-change:transform;
+        }
+        .g-card {
+            flex:0 0 auto; width:min(220px, 54vw); aspect-ratio:3/4;
+            position:relative; border-radius:2px; overflow:hidden;
+            border:1px solid var(--line);
+        }
+        .g-card img { width:100%; height:100%; object-fit:cover; display:block; filter:saturate(0.92) brightness(0.96); }
+        .g-card::after {
+            content:''; position:absolute; inset:0;
+            background:linear-gradient(180deg, transparent 55%, rgba(10,8,14,0.72) 100%);
+        }
+        .g-card .g-label {
+            position:absolute; left:14px; bottom:13px; z-index:2;
+            font-size:11px; color:var(--cream); letter-spacing:0.16em;
+        }
+        .g-card .g-label .gold { color:var(--gold); }
+        .g-card.cta {
+            border:1px solid var(--line-strong);
+            background:rgba(200,168,106,0.04);
+            display:flex; align-items:center; justify-content:center; text-align:center;
+            cursor:pointer;
+        }
+        .g-card.cta .g-cta-text {
+            font-family:"Noto Serif SC",serif; font-size:16px; color:var(--gold);
+            letter-spacing:0.18em; line-height:2;
+        }
+        .gallery-scroll-hint {
+            margin-top:26px; text-align:center; font-size:10px;
+            color:var(--cream-faint); letter-spacing:0.3em; opacity:0.7;
+        }
 
+        /* ===== 表单页 ===== */
+        .form-page { padding:6px 2px 4px; }
         .card {
             background:var(--card-bg);
             border:1px solid var(--line);
             border-radius:3px; padding:22px 20px 24px; margin-bottom:18px;
+            transition:border-color 0.4s, box-shadow 0.4s;
+            position:relative;
         }
+        .card:hover { border-color:rgba(200,168,106,0.32); }
 
-        /* 阴/阳历切换 */
         .calendar-switch {
             display:flex; width:100%; margin-bottom:16px;
             border:1px solid var(--line); border-radius:2px; overflow:hidden;
@@ -159,9 +262,7 @@
             color:var(--cream-faint); font-size:13px; letter-spacing:0.2em;
             cursor:pointer; font-family:inherit; transition:all 0.3s;
         }
-        .calendar-switch button.active {
-            color:var(--gold); background:rgba(200,168,106,0.08);
-        }
+        .calendar-switch button.active { color:var(--gold); background:rgba(200,168,106,0.08); }
 
         select {
             width:100%; padding:14px 12px;
@@ -185,63 +286,79 @@
             font-size:13px; letter-spacing:0.16em; transition:all 0.3s;
             font-family:inherit; font-weight:300;
         }
-        .tag:hover { border-color:rgba(200,168,106,0.35); }
+        .tag:hover { border-color:rgba(200,168,106,0.4); }
         .tag.selected {
             border-color:var(--gold); color:var(--gold);
             background:rgba(200,168,106,0.07);
         }
-        .tag.tri { grid-column:auto; }
         .tag-group.tri-group { grid-template-columns:1fr 1fr 1fr; }
 
-        /* ---- 加载页（安静：一圈一线） ---- */
-        .loading-page { text-align:center; padding:76px 12px 32px; }
-        .orbit { width:120px; height:120px; margin:0 auto 44px; position:relative; }
-        .orbit .o-ring {
-            position:absolute; inset:0; border-radius:50%;
-            border:1px solid rgba(200,168,106,0.22);
+        /* ===== 加载页（卡片雨 + 缘分值） ===== */
+        .loading-page { text-align:center; position:relative; overflow:hidden; padding:40px 12px; min-height:82vh; }
+        .fate-wrap { position:relative; z-index:2; padding-top:38vh; }
+        .fate-num {
+            font-family:"Noto Serif SC",serif;
+            font-size:58px; font-weight:300; color:var(--gold);
+            letter-spacing:0.06em; line-height:1;
+            margin-bottom:18px;
         }
-        .orbit .o-ring:nth-child(2) { inset:18%; border-color:rgba(200,168,106,0.35); animation:spin 16s linear infinite; }
-        .orbit .o-dot {
-            position:absolute; width:6px; height:6px; border-radius:50%; background:var(--gold);
-            top:calc(50% - 3px); left:calc(50% - 3px);
-            box-shadow:0 0 14px rgba(200,168,106,0.6);
-        }
-        .orbit .o-dot.a { animation:spin 5s linear infinite; transform-origin:50% 50%; }
-        .orbit .o-dot.b { animation:spin 8s linear infinite reverse; transform-origin:50% 50%; }
-        @keyframes spin { to { transform:rotate(360deg); } }
         .loading-text {
-            font-size:14px; color:var(--cream-dim); letter-spacing:0.3em; margin-bottom:30px;
+            font-size:14px; color:var(--cream-dim); letter-spacing:0.3em; margin-bottom:24px;
         }
         .progress-track {
-            width:100%; height:1px; background:rgba(255,255,255,0.07);
-            overflow:hidden; margin-bottom:24px;
+            width:180px; height:1px; background:rgba(255,255,255,0.08);
+            overflow:hidden; margin:0 auto 22px;
         }
         .progress {
             height:100%; width:0%;
             background:linear-gradient(to right, #c8a86a, #e3c890);
-            transition:width 0.3s ease;
+            transition:width 0.2s ease;
         }
-        .loading-tip { font-size:11px; color:var(--cream-faint); letter-spacing:0.16em; }
+        .loading-tip { font-size:11px; color:var(--cream-faint); letter-spacing:0.16em; position:relative; z-index:2; }
+        .card-fall {
+            position:absolute; top:-120px; z-index:1;
+            width:56px; height:76px; border-radius:2px;
+            border:1px solid rgba(200,168,106,0.4);
+            background:linear-gradient(135deg, rgba(200,168,106,0.10), rgba(255,255,255,0.03));
+            opacity:0;
+            animation:cardFall linear forwards;
+        }
+        @keyframes cardFall {
+            0% { transform:translateY(0) rotate(-12deg); opacity:0; }
+            12% { opacity:0.9; }
+            78% { opacity:0.9; }
+            100% { transform:translateY(96vh) rotate(14deg); opacity:0; }
+        }
 
-        /* ---- 结果页（人像最大，标签安静成组） ---- */
+        /* ===== 结果页（聚光灯人像） ===== */
         .result-page { padding:4px 2px 8px; text-align:center; }
         .result-page .page-head { margin-bottom:26px; }
+        @property --angle { syntax:'<angle>'; initial-value:0deg; inherits:false; }
         .portrait-frame {
             position:relative; width:100%; max-width:316px; margin:0 auto 26px;
             aspect-ratio:3/4; border-radius:3px; overflow:hidden;
-            border:1px solid var(--line-strong);
+            background:#0f0d15;
             box-shadow:0 26px 70px rgba(0,0,0,0.5);
         }
+        .portrait-frame::before {
+            content:''; position:absolute; inset:-1px; z-index:4; pointer-events:none;
+            padding:1px;
+            background:conic-gradient(from var(--angle), transparent 0%, rgba(200,168,106,0.7) 14%, transparent 30%, transparent 55%, rgba(200,168,106,0.35) 70%, transparent 88%);
+            -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite:xor; mask-composite:exclude;
+            animation:borderSpin 5s linear infinite;
+        }
+        @keyframes borderSpin { to { --angle:360deg; } }
         .portrait-frame::after {
-            content:''; position:absolute; inset:9px; z-index:3; pointer-events:none;
-            border:1px solid rgba(200,168,106,0.28); border-radius:1px;
+            content:''; position:absolute; inset:0; z-index:3; pointer-events:none;
+            background:radial-gradient(circle at var(--mx,50%) var(--my,20%), rgba(200,168,106,0.14) 0%, transparent 55%);
         }
         .portrait-frame img {
             width:100%; height:100%; object-fit:cover; display:block;
-            animation:imgReveal 1.1s cubic-bezier(0.22,1,0.36,1);
+            animation:imgReveal 1.2s var(--ease-out);
         }
         @keyframes imgReveal {
-            from { opacity:0; transform:scale(1.05); filter:blur(5px); }
+            from { opacity:0; transform:scale(1.06); filter:blur(6px); }
             to { opacity:1; transform:scale(1); filter:blur(0); }
         }
         .result-tags {
@@ -272,6 +389,22 @@
             text-align:center; font-size:10px; color:var(--cream-faint);
             margin-top:32px; letter-spacing:0.24em; opacity:0.55;
         }
+
+        /* ===== 幕帘转场 ===== */
+        .curtain {
+            position:fixed; inset:0; z-index:60; pointer-events:none;
+            background:linear-gradient(180deg, #0a080e 0%, #14121a 100%);
+            transform:scaleY(0); transform-origin:bottom;
+            transition:transform 0.55s var(--ease-out);
+        }
+        .curtain::after {
+            content:''; position:absolute; top:0; left:0; right:0; height:1px;
+            background:linear-gradient(to right, transparent, var(--gold), transparent);
+            opacity:0.7;
+        }
+        .curtain.show { transform:scaleY(1); transform-origin:bottom; }
+        .curtain.open { transform:scaleY(0); transform-origin:top; }
+
         .toast {
             position:fixed; left:50%; bottom:56px; transform:translateX(-50%) translateY(18px);
             background:rgba(20,17,24,0.94); border:1px solid var(--line);
@@ -284,37 +417,57 @@
         @media (min-width:600px) {
             .stage { padding:44px 32px; }
             .card { padding:24px 22px; }
+            .logo-line { font-size:60px; }
         }
-        @media (max-width:360px) {
-            .logo { font-size:44px; }
+        @media (max-width:380px) {
+            .logo-line { font-size:46px; }
             .card { padding:18px 15px 22px; }
+            .g-card { width:min(180px, 52vw); }
+        }
+        @media (hover:none), (pointer:coarse) {
+            body.custom-cursor .cursor-dot, body.custom-cursor .cursor-ring { display:none; }
         }
         @media (prefers-reduced-motion: reduce) {
-            .page.active { animation:none; }
-            .orbit .o-ring:nth-child(2), .orbit .o-dot.a, .orbit .o-dot.b { animation-duration:60s; }
+            * { animation-duration:0.001s !important; animation-delay:0s !important; transition-duration:0.001s !important; }
+            .logo-line .char { transform:none; }
+            .marquee-track { animation:none; }
+            .card-fall { display:none; }
         }
     </style>
 </head>
 <body>
     <div class="sky"></div>
 
+    <!-- 自定义光标 -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+
+    <!-- 幕帘 -->
+    <div class="curtain" id="curtain"></div>
+
     <div class="stage">
         <div class="container">
             <!-- ===== 启动页 ===== -->
             <div class="page start-page active" id="page-start">
-                <div class="emblem">
-                    <svg viewBox="0 0 100 100">
-                        <circle class="ring" cx="50" cy="50" r="46"/>
-                        <circle class="ring2" cx="50" cy="50" r="37"/>
-                        <circle class="halo-ring" cx="50" cy="50" r="28"/>
-                        <circle class="core" cx="50" cy="50" r="10"/>
-                    </svg>
+                <div class="emblem-wrap">
+                    <div class="emblem">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="ring" cx="50" cy="50" r="46"/>
+                            <circle class="ring2" cx="50" cy="50" r="37"/>
+                            <circle class="halo-ring" cx="50" cy="50" r="28"/>
+                            <circle class="core" cx="50" cy="50" r="10"/>
+                        </svg>
+                    </div>
                 </div>
-                <h1 class="logo"><span class="gold">一</span>半</h1>
+                <h1 class="logo-line" id="logo-line"><span class="char-mask"><span class="char gold">一</span></span><span class="char-mask"><span class="char">半</span></span></h1>
                 <p class="slogan">好的关系，各撑一半</p>
-                <div class="divider"></div>
-                <p class="start-quote">人海茫茫，总有人与你刚好凑成圆满</p>
-                <button class="btn" onclick="goPage('page-form')">抽取你的另一半</button>
+                <p class="start-quote">人海茫茫，<em>总有人</em>与你刚好凑成圆满</p>
+                <div class="start-cta">
+                    <button class="btn magnetic" onclick="goForm()">抽取你的另一半</button>
+                </div>
+                <div class="marquee" id="marquee">
+                    <div class="marquee-track" id="marquee-track"></div>
+                </div>
             </div>
 
             <!-- ===== 填写页 ===== -->
@@ -361,24 +514,21 @@
                     <div class="tag-group tri-group" id="region-group">
                         <div class="tag tri" data-value="南方">南方</div>
                         <div class="tag tri" data-value="北方">北方</div>
-                        <div class="tag tri" data-value="随缘" selected>随缘</div>
+                        <div class="tag tri selected" data-value="随缘">随缘</div>
                     </div>
                 </div>
 
-                <button class="btn" onclick="generate()">开始拼凑</button>
+                <button class="btn magnetic" onclick="generate()">开始拼凑</button>
             </div>
 
             <!-- ===== 加载页 ===== -->
             <div class="page loading-page" id="page-loading">
-                <div class="orbit">
-                    <div class="o-ring"></div>
-                    <div class="o-ring"></div>
-                    <div class="o-dot a"></div>
-                    <div class="o-dot b"></div>
+                <div class="fate-wrap">
+                    <div class="fate-num" id="fate-num">0</div>
+                    <p class="loading-text">正在人潮里，帮你找那一半</p>
+                    <div class="progress-track"><div class="progress" id="progress"></div></div>
+                    <p class="loading-tip">你做好你的一半，剩下的，看遇见谁</p>
                 </div>
-                <p class="loading-text">正在人潮里，帮你找那一半</p>
-                <div class="progress-track"><div class="progress" id="progress"></div></div>
-                <p class="loading-tip">你做好你的一半，剩下的，看遇见谁</p>
             </div>
 
             <!-- ===== 结果页 ===== -->
@@ -389,7 +539,7 @@
                     <p id="result-sub">正在向你走来</p>
                 </div>
 
-                <div class="portrait-frame">
+                <div class="portrait-frame" id="portrait-frame">
                     <img id="result-img" alt="你的另一半" style="display:none;">
                 </div>
 
@@ -406,20 +556,147 @@
                 </p>
 
                 <div class="btn-group">
-                    <button class="btn secondary" onclick="generate()">再抽一次</button>
-                    <button class="btn" onclick="saveCard()">保存图片</button>
+                    <button class="btn secondary magnetic" onclick="generate()">再抽一次</button>
+                    <button class="btn magnetic" onclick="saveCard()">保存图片</button>
                 </div>
 
-                <button class="btn secondary" onclick="goXiaojia()">已经遇到TA了？去小家说第一句话</button>
+                <button class="btn secondary magnetic" onclick="goXiaojia()">已经遇到TA了？去小家说第一句话</button>
 
                 <p class="footer-text">AI 生成 · 内容仅供娱乐参考</p>
             </div>
         </div>
     </div>
 
+    <!-- ===== 横向画廊（启动页之后独立整屏） ===== -->
+    <div class="gallery-zone" id="gallery-zone">
+        <div class="gallery-head">
+            <div class="g-step">遇见样本</div>
+            <h3>他们，都等在一半里</h3>
+            <p>向左滑动，看看缘分的样子</p>
+        </div>
+        <div class="gallery-viewport" id="gallery-viewport">
+            <div class="gallery-track" id="gallery-track"></div>
+        </div>
+        <div class="gallery-scroll-hint">SCROLL · 滑动画廊</div>
+    </div>
+
     <div class="toast" id="toast"></div>
 
     <script>
+        /* ===== 工具 ===== */
+        const $ = id => document.getElementById(id);
+        const isFinePointer = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ===== 1. 自定义光标（桌面） ===== */
+        (function(){
+            if(!isFinePointer || reduceMotion) return;
+            document.body.classList.add('custom-cursor');
+            const dot=$('cursor-dot'), ring=$('cursor-ring');
+            let mx=innerWidth/2, my=innerHeight/2, rx=mx, ry=my;
+            const lerp=(a,b,t)=>a+(b-a)*t;
+            document.addEventListener('mousemove',e=>{
+                mx=e.clientX; my=e.clientY;
+                dot.style.left=mx+'px'; dot.style.top=my+'px';
+            });
+            (function loop(){
+                rx=lerp(rx,mx,0.16); ry=lerp(ry,my,0.16);
+                ring.style.left=rx+'px'; ring.style.top=ry+'px';
+                requestAnimationFrame(loop);
+            })();
+            document.querySelectorAll('a,button,.tag,.card,select,.g-card.cta').forEach(el=>{
+                el.addEventListener('mouseenter',()=>ring.classList.add('grow'));
+                el.addEventListener('mouseleave',()=>ring.classList.remove('grow'));
+            });
+            document.addEventListener('mouseleave',()=>{ ring.classList.add('hide'); });
+            document.addEventListener('mouseenter',()=>{ ring.classList.remove('hide'); });
+        })();
+
+        /* ===== 2. 磁吸按钮（桌面） ===== */
+        (function(){
+            if(!isFinePointer || reduceMotion) return;
+            document.querySelectorAll('.magnetic').forEach(btn=>{
+                btn.addEventListener('mousemove',e=>{
+                    const r=btn.getBoundingClientRect();
+                    const dx=e.clientX-(r.left+r.width/2);
+                    const dy=e.clientY-(r.top+r.height/2);
+                    btn.style.transform='translate('+dx*0.22+'px,'+dy*0.28+'px)';
+                });
+                btn.addEventListener('mouseleave',()=>{
+                    btn.style.transition='transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+                    btn.style.transform='translate(0,0)';
+                    setTimeout(()=>{ btn.style.transition=''; },500);
+                });
+            });
+        })();
+
+        /* ===== 3. 文字逐字入场 ===== */
+        (function(){
+            if(reduceMotion) return;
+            const chars=document.querySelectorAll('.logo-line .char');
+            chars.forEach((c,i)=>{
+                c.style.animationDelay=(0.15+i*0.12)+'s';
+                c.classList.add('up');
+            });
+        })();
+
+        /* ===== 4. 无缝跑马灯 ===== */
+        (function(){
+            const track=$('marquee-track');
+            const items=['相遇是缘分','相处是修行','心动是刹那','相守是一生','你做好你的一半','剩下的交给遇见'];
+            const half=items.map(t=>'<span class="marquee-item">'+t+'<span class="gold"> · </span></span>').join('');
+            track.innerHTML=half+half;
+        })();
+
+        /* ===== 5. 横向钉住画廊 ===== */
+        (function(){
+            const track=$('gallery-track');
+            const zone=$('gallery-zone');
+            const samples=[
+                ['assets/final_female-25s-sunny.png','25-29','明朗'],
+                ['assets/final_male-25s-cool.png','25-29','沉静'],
+                ['assets/final_female-35s-sunny.png','30-34','热忱'],
+                ['assets/final_male-35s-cool.png','30-34','温厚'],
+                ['assets/final_female-25s-cool.png','25-29','清冷'],
+                ['assets/final_male-25s-sunny.png','25-29','阳光'],
+                ['assets/final_female-35s-cool.png','30-34','自持'],
+                ['assets/final_male-35s-sunny.png','30-34','明朗']
+            ];
+            track.innerHTML=samples.map(s=>{
+                const tag=s[1].split('-')[0]+'s';
+                return '<div class="g-card"><img src="'+s[0]+'" alt=""><div class="g-label"><span class="gold">'+s[1]+'</span> · '+s[2]+'</div></div>';
+            }).join('')+
+            '<div class="g-card cta" onclick="goForm()"><div class="g-cta-text">遇见你的<br>另一半</div></div>';
+
+            if(isFinePointer && !reduceMotion){
+                let ticking=false;
+                window.addEventListener('scroll',()=>{
+                    if(ticking) return;
+                    ticking=true;
+                    requestAnimationFrame(()=>{
+                        const rect=zone.getBoundingClientRect();
+                        const vh=innerHeight;
+                        const total=track.scrollWidth-zone.clientWidth;
+                        if(total<=0) return;
+                        // 区域进入视口中心附近时开始横向映射
+                        const progress=(vh*0.2-rect.top)/(rect.height+vh*0.4);
+                        const clamped=Math.max(0,Math.min(1,progress));
+                        track.style.transform='translateX('+(-clamped*total)+'px)';
+                        ticking=false;
+                    });
+                },{passive:true});
+            } else {
+                const vp=$('gallery-viewport');
+                vp.style.overflowX='auto';
+                vp.style.webkitOverflowScrolling='touch';
+                vp.style.scrollSnapType='x mandatory';
+                vp.style.cursor='grab';
+                track.style.padding='0 8vw';
+                zone.style.height='auto';
+                zone.style.padding='70px 0';
+            }
+        })();
+
         /* ===== 农历转换（1900-2100 标准查表法） ===== */
         const LUNAR_INFO = [
 0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
@@ -443,7 +720,6 @@
 0x0b273,0x06930,0x07337,0x06aa0,0x0ad50,0x14b55,0x04b60,0x0a570,0x054e4,0x0d160,
 0x0e968,0x0d520,0x0daa0,0x16aa6,0x056d0,0x04ae0,0x0a9d4,0x0a2d0,0x0d150,0x0f252,
 0x0d520];
-
         function lunarYearDays(y){
             let sum=348;
             for(let i=0x8000;i>0x8;i>>=1) sum+=(LUNAR_INFO[y-1900]&i)?1:0;
@@ -455,7 +731,6 @@
             return 0;
         }
         function monthDays(y,m){ return (LUNAR_INFO[y-1900]&(0x10000>>m))?30:29; }
-
         function solarToLunar(y,m,d){
             const baseDate=new Date(1900,0,31);
             const objDate=new Date(y,m-1,d);
@@ -498,13 +773,9 @@
             return {year:dt.getFullYear(), month:dt.getMonth()+1, day:dt.getDate()};
         }
 
-        /* ===== 生肖（按农历年） ===== */
+        /* ===== 生肖 / 节气 / 星座 ===== */
         const ZODIACS = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
-        function getShengxiao(lunarYear){
-            return ZODIACS[(lunarYear-4)%12]; // 1900庚子年属鼠：(1900-4)%12=0
-        }
-
-        /* ===== 二十四节气（近似日期，±1天，娱乐用途） ===== */
+        function getShengxiao(lunarYear){ return ZODIACS[(lunarYear-4)%12]; }
         const SOLAR_TERMS = [
             ['小寒',1,6],['大寒',1,20],['立春',2,4],['雨水',2,19],['惊蛰',3,6],['春分',3,21],
             ['清明',4,5],['谷雨',4,20],['立夏',5,6],['小满',5,21],['芒种',6,6],['夏至',6,21],
@@ -519,8 +790,6 @@
             }
             return best[0];
         }
-
-        /* ===== 星座（阳历） ===== */
         const ZODIAC_SIGNS = [
             {name:'摩羯座',start:'12-22',end:'01-19'},{name:'水瓶座',start:'01-20',end:'02-18'},
             {name:'双鱼座',start:'02-19',end:'03-20'},{name:'白羊座',start:'03-21',end:'04-19'},
@@ -534,11 +803,6 @@
             for(const s of ZODIAC_SIGNS) if(md>=s.start&&md<=s.end) return s.name;
             return '摩羯座';
         }
-
-        /* ===== 性格（由偏好气质映射，国学风标签） ===== */
-        const PERSONALITY = {
-            '清冷':'沉静思辨','阳光':'明朗热忱','温润':'温厚知心','疏离':'独立自持'
-        };
 
         /* ===== 人像库（仅国内·中国面孔） ===== */
         const PORTRAITS = {
@@ -557,11 +821,11 @@
 
         /* ===== 初始化下拉 ===== */
         (function(){
-            const ys=document.getElementById('birth-year');
+            const ys=$('birth-year');
             for(let y=2008;y>=1970;y--){ const o=document.createElement('option'); o.value=y; o.text=y+'年'; ys.add(o); }
-            const ms=document.getElementById('birth-month');
+            const ms=$('birth-month');
             for(let m=1;m<=12;m++){ const o=document.createElement('option'); o.value=String(m).padStart(2,'0'); o.text=m+'月'; ms.add(o); }
-            const ds=document.getElementById('birth-day');
+            const ds=$('birth-day');
             for(let d=1;d<=31;d++){ const o=document.createElement('option'); o.value=String(d).padStart(2,'0'); o.text=d+'日'; ds.add(o); }
         })();
 
@@ -587,54 +851,94 @@
             showToast(mode==='solar'?'按阳历生日匹配':'按农历生日匹配');
         }
 
-        function goPage(id){
-            document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if(id==='page-result') window.scrollTo(0,0);
+        /* ===== 页面切换（幕帘转场） ===== */
+        const curtain=$('curtain');
+        function goPage(id, then){
+            curtain.classList.add('show');
+            setTimeout(()=>{
+                document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+                $(id).classList.add('active');
+                window.scrollTo(0,0);
+                curtain.classList.remove('show');
+                if(then) then();
+            },300);
+        }
+        function goForm(){
+            goPage('page-form');
+            window.scrollTo(0,0);
         }
 
         function randomPick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
         function showToast(msg){
-            const t=document.getElementById('toast');
+            const t=$('toast');
             t.textContent=msg; t.classList.add('show');
             clearTimeout(t._timer);
             t._timer=setTimeout(()=>t.classList.remove('show'),2200);
         }
 
+        /* ===== 聚光灯（结果页人像，桌面） ===== */
+        (function(){
+            if(!isFinePointer) return;
+            const pf=$('portrait-frame');
+            pf.addEventListener('mousemove',e=>{
+                const r=pf.getBoundingClientRect();
+                pf.style.setProperty('--mx',((e.clientX-r.left)/r.width*100).toFixed(1)+'%');
+                pf.style.setProperty('--my',((e.clientY-r.top)/r.height*100).toFixed(1)+'%');
+            });
+        })();
+
+        /* ===== 卡片雨（加载页） ===== */
+        function rainCards(){
+            const page=$('page-loading');
+            page.querySelectorAll('.card-fall').forEach(c=>c.remove());
+            if(reduceMotion) return;
+            for(let i=0;i<14;i++){
+                const c=document.createElement('div');
+                c.className='card-fall';
+                c.style.left=(Math.random()*88+4)+'%';
+                c.style.animationDuration=(1.6+Math.random()*1.2).toFixed(2)+'s';
+                c.style.animationDelay=(Math.random()*0.9).toFixed(2)+'s';
+                c.style.width=(40+Math.random()*30)+'px';
+                c.style.height=(c.style.width*1.35)+'px';
+                page.appendChild(c);
+            }
+        }
+
         function parseBirthday(){
-            const year=parseInt(document.getElementById('birth-year').value,10);
-            const month=parseInt(document.getElementById('birth-month').value,10);
-            const day=parseInt(document.getElementById('birth-day').value,10);
+            const year=parseInt($('birth-year').value,10);
+            const month=parseInt($('birth-month').value,10);
+            const day=parseInt($('birth-day').value,10);
             if(!year||!month||!day) return null;
-            let solar={year,month,day}, lunarNote='';
+            let solar={year,month,day};
             if(calendarMode==='lunar'){
-                const s=lunarToSolar(year,month,day,false);
-                solar=s;
-                lunarNote='农历'+year+'年';
+                solar=lunarToSolar(year,month,day,false);
             }
             const lunar=solarToLunar(solar.year,solar.month,solar.day);
             return {
                 solar,
                 shengxiao:getShengxiao(lunar.year),
                 term:getSolarTerm(solar.month,solar.day),
-                zodiac:getZodiac(solar.month,solar.day),
-                lunarNote
+                zodiac:getZodiac(solar.month,solar.day)
             };
         }
 
         function generate(){
-            const gender=document.getElementById('gender').value;
+            const gender=$('gender').value;
             const bd=parseBirthday();
             if(!bd){ showToast('请先选择完整生日'); return; }
             if(!selectedTemperament){ showToast('请选择偏好气质'); return; }
 
-            goPage('page-loading');
-            let progress=0;
+            goPage('page-loading', rainCards);
+            const fateNum=$('fate-num');
+            let progress=0, fate=0;
             const timer=setInterval(()=>{
                 progress+=Math.random()*15;
                 if(progress>90) progress=90;
-                document.getElementById('progress').style.width=progress+'%';
+                $('progress').style.width=progress+'%';
+                fate+=Math.random()*12;
+                if(fate>100) fate=100;
+                fateNum.textContent=Math.round(fate);
             },200);
 
             try{
@@ -651,12 +955,12 @@
                 if(selectedRegion!=='随缘') tags.push(selectedRegion);
                 const finalTags=tags.filter(t=>t);
 
-                clearInterval(timer);
-                document.getElementById('progress').style.width='100%';
-                document.getElementById('result-sub').textContent=targetGenderText+' · '+selectedTemperament+' · '+bd.shengxiao+'年';
-
                 setTimeout(()=>{
-                    const img=document.getElementById('result-img');
+                    clearInterval(timer);
+                    fateNum.textContent='100';
+                    $('progress').style.width='100%';
+                    $('result-sub').textContent=targetGenderText+' · '+selectedTemperament+' · '+bd.shengxiao+'年';
+                    const img=$('result-img');
                     img.onerror=()=>{
                         img.style.display='block';
                         img.style.background='linear-gradient(135deg,#1b1822,#241f2c)';
@@ -664,17 +968,17 @@
                     };
                     img.src=imageUrl;
                     img.style.display='block';
-                    img.onload=()=>{ img.style.animation='none'; void img.offsetWidth; img.style.animation='imgReveal 1.1s cubic-bezier(0.22,1,0.36,1)'; };
-                    document.getElementById('result-tags').innerHTML=finalTags.map(t=>'<span class="result-tag">'+t+'</span>').join('');
+                    img.onload=()=>{ img.style.animation='none'; void img.offsetWidth; img.style.animation='imgReveal 1.2s cubic-bezier(0.16,1,0.3,1)'; };
+                    $('result-tags').innerHTML=finalTags.map(t=>'<span class="result-tag">'+t+'</span>').join('');
                     const regionLine=selectedRegion==='随缘'
                         ? 'Ta的节奏，要由你来慢慢读'
                         : '同为'+selectedRegion+'人，相处更懂彼此的温度';
-                    document.getElementById('meet-tip').innerHTML=
+                    $('meet-tip').innerHTML=
                         '<div class="tip-line">'+time+' · <span class="gold">'+place+'</span></div>'+
                         '<div class="tip-line">留意'+crowd+'</div>'+
                         '<div class="tip-line">'+regionLine+'</div>';
                     goPage('page-result');
-                },450);
+                },2100);
             }catch(e){
                 clearInterval(timer);
                 showToast('生成失败，请重试');
@@ -685,5 +989,4 @@
         function goXiaojia(){ window.open('https://yijia.netlify.app','_blank'); }
         function saveCard(){ showToast('长按图片即可保存'); }
     </script>
-</body>
-</html>
+
