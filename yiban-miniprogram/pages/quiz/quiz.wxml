@@ -1,0 +1,36 @@
+<view class="page safe-top" wx:if="{{!done}}">
+  <!-- 顶栏 -->
+  <view class="topbar">
+    <view class="back" bindtap="goBack">‹</view>
+    <view class="step">性格快测 · {{cur + 1}} / {{questions.length}}</view>
+  </view>
+
+  <!-- 进度 -->
+  <view class="progress">
+    <view class="progress-bar" style="width: {{(cur + 1) / questions.length * 100}}%;"></view>
+  </view>
+
+  <!-- 题目 -->
+  <view class="q-card card">
+    <view class="q-text">{{questions[cur].q}}</view>
+  </view>
+
+  <!-- 选项 -->
+  <view class="opts">
+    <button class="btn btn--ghost opt" hover-class="opt-press" data-idx="0" bindtap="onAnswer">{{questions[cur].a}}</button>
+    <button class="btn btn--ghost opt" hover-class="opt-press" data-idx="1" bindtap="onAnswer">{{questions[cur].b}}</button>
+  </view>
+
+  <view class="page-footer">娱乐参考 · 仅用于趣味匹配</view>
+</view>
+
+<!-- 结果 -->
+<view class="page page--center safe-top" wx:else>
+  <view class="type-badge">
+    <text class="type-text">{{mbti}}</text>
+  </view>
+  <view class="type-name">{{mbti}}</view>
+  <view class="type-desc">{{desc}}</view>
+  <button class="btn btn--gold act" hover-class="btn-press" bindtap="goBack">回到我的缘分</button>
+  <view class="page-footer">AI 生成 · 内容仅供娱乐参考</view>
+</view>

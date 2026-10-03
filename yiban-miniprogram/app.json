@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/start/start",
+    "pages/form/form",
+    "pages/loading/loading",
+    "pages/result/result",
+    "pages/quiz/quiz"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundColor": "#0e0c10",
+    "backgroundTextStyle": "light",
+    "enablePullDownRefresh": false
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

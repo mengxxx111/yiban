@@ -1,0 +1,50 @@
+<view class="page safe-top">
+  <!-- 人像区：首入 3D 倾斜光影 / 再抽翻牌 -->
+  <view class="portrait-wrap {{anim}}">
+    <image wx:if="{{imgReady && portrait}}" class="portrait" src="{{portrait.src}}" mode="aspectFill" bindload="onImgLoad" binderror="onImgError" />
+    <view wx:elif="{{imgError}}" class="portrait portrait--placeholder">
+      <view class="ph-text">TA 暂时走开了</view>
+      <view class="ph-sub">点「再抽一次」换一位</view>
+    </view>
+    <view wx:else class="portrait portrait--placeholder placeholder-shimmer">
+      <view class="ph-text">正在遇见 TA…</view>
+    </view>
+  </view>
+
+  <!-- 标签组：交错浮现 -->
+  <view class="tags" wx:if="{{portrait}}">
+    <text wx:for="{{tags}}" wx:key="*this" class="chip anim-fadeUp" style="animation-delay: {{index * 90}}ms;">{{item}}</text>
+    <text class="chip chip--dim anim-fadeUp" style="animation-delay: {{tags.length * 90}}ms;">地域 · {{regionText}}</text>
+  </view>
+
+  <!-- 相遇指引：弹性入场 -->
+  <view class="enc card anim-spring" wx:if="{{enc}}">
+    <view class="enc-title">相遇指引</view>
+    <view class="enc-line">在「{{enc.scene}}」</view>
+    <view class="enc-line">{{enc.time}}，多留意{{enc.people}}</view>
+    <view class="enc-ps">可能性参考 · 请也多留意身边真实的人</view>
+  </view>
+
+  <!-- 行动 -->
+  <view class="actions">
+    <!-- 保存 = 按住蓄力 0.8s（仪式感 + 防误触） -->
+    <view class="hold-btn" bindtouchstart="onHoldStart" bindtouchend="onHoldEnd" bindtouchcancel="onHoldCancel">
+      <view class="hold-fill" style="width: {{holdW}}%;"></view>
+      <text class="hold-label">{{saving ? '正在生成…' : '按住蓄力 · 保存相遇卡片'}}</text>
+    </view>
+    <button class="btn btn--ghost act btn-spring" bindtap="onRedraw">再抽一次</button>
+    <view class="row-2">
+      <button class="btn btn--dim act-half btn-spring" bindtap="onBackForm">重新选择</button>
+      <button class="btn btn--dim act-half btn-spring" bindtap="goXiaojia">去小家说第一句话</button>
+    </view>
+  </view>
+
+  <!-- 性格钩子（留存） -->
+  <view class="quiz-hook anim-fadeUp" bindtap="goQuiz" wx:if="{{!hasMbti}}">测测我的性格，让缘分更懂我 →</view>
+  <view class="quiz-hook quiz-hook--done anim-fadeUp" bindtap="goQuiz" wx:else>性格 · {{mbtiText}}（再测一次 →）</view>
+
+  <!-- 海报画布（隐藏） -->
+  <canvas canvas-id="poster" class="poster-canvas"></canvas>
+
+  <view class="page-footer">AI 生成 · 内容仅供娱乐参考</view>
+</view>

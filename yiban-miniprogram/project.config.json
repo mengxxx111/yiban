@@ -1,0 +1,22 @@
+{
+  "description": "一半 · 缘分抽卡小程序（AI 情感匹配 · 好的关系，各撑一半）",
+  "appid": "touristappid",
+  "projectname": "yiban-miniprogram",
+  "compileType": "miniprogram",
+  "libVersion": "3.4.3",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "urlCheck": false,
+    "coverView": true,
+    "lazyloadPlaceholderEnable": false,
+    "ignoreUploadUnusedFiles": true
+  },
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
+}

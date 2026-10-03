@@ -1,0 +1,22 @@
+<view class="page page--center safe-top">
+  <!-- 品牌徽章：浮现入场 -->
+  <view class="emblem anim-pop">
+    <view class="emblem-inner">
+      <text class="emblem-cn">一半</text>
+      <text class="emblem-en">YI BAN</text>
+    </view>
+  </view>
+
+  <!-- 主标语：金色高光周期性扫过 -->
+  <view class="slogan">好的关系，各撑一半</view>
+  <view class="subtitle breath">你做好你的一半，剩下的，看遇见谁</view>
+
+  <!-- 主按钮：弹簧回弹 -->
+  <button class="btn btn--gold cta btn-spring" bindtap="goForm">抽取你的另一半</button>
+
+  <!-- 副入口 -->
+  <view class="mini-entry anim-fadeUp" bindtap="goForm">先看看 TA 的模样 →</view>
+
+  <!-- 合规 -->
+  <view class="page-footer">AI 生成 · 内容仅供娱乐参考</view>
+</view>

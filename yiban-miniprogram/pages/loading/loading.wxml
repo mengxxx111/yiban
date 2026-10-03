@@ -1,0 +1,12 @@
+<view class="page page--center safe-top">
+  <view class="ring">
+    <view class="ring-inner">
+      <text class="ring-text">{{progress}}%</text>
+    </view>
+  </view>
+  <view class="progress-line">
+    <view class="progress-fill" style="width: {{progress}}%;"></view>
+  </view>
+  <view class="lunar-note breath">你做好你的一半，剩下的，看遇见谁</view>
+  <view class="page-footer">AI 生成 · 内容仅供娱乐参考</view>
+</view>

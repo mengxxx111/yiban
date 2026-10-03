@@ -1,0 +1,74 @@
+<view class="page safe-top">
+  <!-- 页头 -->
+  <view class="topbar">
+    <view class="back" bindtap="onBack">‹</view>
+    <view class="step">在遇见 TA 之前 · 只需三件事</view>
+  </view>
+
+  <!-- ① 性别 -->
+  <view class="section">
+    <view class="sec-title"><text class="sec-no">壹</text> 你想遇见谁</view>
+    <view class="grid-2">
+      <view wx:for="{{genders}}" wx:key="key"
+        class="opt-card {{gender === item.key ? 'opt-card--on' : ''}}"
+        data-key="{{item.key}}" bindtap="onPickGender">
+        <view class="opt-label">{{item.label}}</view>
+        <view class="opt-desc">{{item.desc}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ② 生日 -->
+  <view class="section">
+    <view class="sec-title"><text class="sec-no">贰</text> 你的生辰</view>
+    <view class="birth-card card">
+      <view class="birth-pickers">
+        <picker mode="selector" range="{{years}}" value="{{yIdx}}" bindchange="onYear">
+          <view class="pick">{{years[yIdx]}}<text class="pick-unit">年</text></view>
+        </picker>
+        <picker mode="selector" range="{{months}}" value="{{mIdx}}" bindchange="onMonth">
+          <view class="pick">{{months[mIdx]}}<text class="pick-unit">月</text></view>
+        </picker>
+        <picker mode="selector" range="{{days}}" value="{{dIdx}}" bindchange="onDay">
+          <view class="pick">{{days[dIdx]}}<text class="pick-unit">日</text></view>
+        </picker>
+      </view>
+      <view class="birth-meta">
+        <text class="chip">生肖 · {{zodiac}}</text>
+        <text class="chip">{{constellation}}</text>
+        <view class="lunar-toggle" bindtap="onToggleLunar">
+          {{showLunar ? '农历 ' + lunarText : '查看农历 →'}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ③ 气质 -->
+  <view class="section">
+    <view class="sec-title"><text class="sec-no">叁</text> 你偏爱的气质</view>
+    <view class="grid-2">
+      <view wx:for="{{styles}}" wx:key="key"
+        class="opt-card opt-card--style {{style === item.key ? 'opt-card--on' : ''}}"
+        data-key="{{item.key}}" bindtap="onPickStyle">
+        <view class="opt-label">{{item.label}}</view>
+        <view class="opt-desc">{{item.desc}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 可选：地域 -->
+  <view class="section section--soft">
+    <view class="sec-title sec-title--soft">地域偏好（可选）</view>
+    <view class="chips-row">
+      <view wx:for="{{regions}}" wx:key="key"
+        class="chip chip--pick {{region === item.key ? 'chip--on' : ''}}"
+        data-key="{{item.key}}" bindtap="onPickRegion">{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- 行动 -->
+  <button class="btn btn--gold act {{canGo ? '' : 'act--disabled'}}" hover-class="btn-press" bindtap="goLoading">开始抽取</button>
+  <view class="quiz-entry" bindtap="goQuiz">先测测我的性格 →（不测也不影响抽取）</view>
+
+  <view class="page-footer">AI 生成 · 内容仅供娱乐参考</view>
+</view>

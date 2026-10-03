@@ -1,0 +1,154 @@
+/* pages/result/result.wxss */
+.portrait-wrap {
+  padding-top: 24rpx;
+  display: flex;
+  justify-content: center;
+  transform-style: preserve-3d;
+  perspective: 1400rpx;
+}
+
+/* 首入 3D 倾斜光影 / 再抽翻牌由 .anim-tilt / .anim-flip 驱动 */
+
+.portrait {
+  width: 560rpx;
+  height: 640rpx;
+  border-radius: 36rpx;
+  border: 2rpx solid rgba(212, 175, 55, 0.5);
+  box-shadow: 0 30rpx 80rpx rgba(0, 0, 0, 0.5), 0 0 0 12rpx rgba(212, 175, 55, 0.05), 0 24rpx 60rpx rgba(212, 175, 55, 0.08);
+  background: #1a1620;
+}
+
+.portrait--placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ph-text {
+  font-size: 30rpx;
+  color: var(--text-dim);
+  letter-spacing: 4rpx;
+}
+
+.ph-sub {
+  font-size: 24rpx;
+  color: var(--text-faint);
+  margin-top: 12rpx;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 36rpx;
+  padding: 0 20rpx;
+}
+
+.chip--dim {
+  color: var(--text-dim);
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* 相遇指引 */
+.enc {
+  margin-top: 40rpx;
+  padding: 36rpx 40rpx;
+  position: relative;
+}
+
+.enc-title {
+  font-size: 24rpx;
+  color: var(--gold-bright);
+  letter-spacing: 6rpx;
+  margin-bottom: 16rpx;
+}
+
+.enc-line {
+  font-size: 30rpx;
+  color: var(--text-hi);
+  line-height: 1.7;
+  letter-spacing: 1rpx;
+}
+
+.enc-ps {
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  color: var(--text-faint);
+}
+
+/* 行动 */
+.actions { margin-top: 44rpx; }
+
+/* 蓄力保存按钮 */
+.hold-btn {
+  position: relative;
+  overflow: hidden;
+  height: 92rpx;
+  border-radius: 999rpx;
+  background: linear-gradient(135deg, #e8c45c 0%, #d4af37 55%, #b8912f 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16rpx 40rpx rgba(212, 175, 55, 0.28);
+  user-select: none;
+}
+
+.hold-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: rgba(255, 255, 255, 0.38);
+  border-radius: 999rpx;
+  transition: width 0.06s linear;
+  pointer-events: none;
+}
+
+.hold-label {
+  position: relative;
+  z-index: 1;
+  color: #201a08;
+  font-size: 28rpx;
+  font-weight: 600;
+  letter-spacing: 3rpx;
+}
+
+.act {
+  width: 100%;
+  height: 92rpx;
+  margin-top: 20rpx;
+}
+
+.row-2 {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 20rpx;
+}
+
+.act-half {
+  flex: 1;
+  height: 88rpx;
+  font-size: 26rpx;
+}
+
+/* 性格钩子 */
+.quiz-hook {
+  text-align: center;
+  font-size: 26rpx;
+  color: var(--gold-bright);
+  margin-top: 40rpx;
+  letter-spacing: 2rpx;
+}
+
+.quiz-hook--done { color: var(--text-dim); }
+
+/* 海报画布 */
+.poster-canvas {
+  position: fixed;
+  left: -9999rpx;
+  top: 0;
+  width: 750rpx;
+  height: 1210rpx;
+}
+
+.btn-press { transform: scale(0.98); }

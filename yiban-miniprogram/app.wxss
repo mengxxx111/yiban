@@ -1,0 +1,269 @@
+/* ============ 一半 · 全局主题 ============
+   设计语言：深色东方暗调 × 月光金 · 清晰 × 克制 × 控制 × 信任
+   信息安静：重要的自己发光，其余安静下来
+*/
+page {
+  /* 色彩体系 */
+  --bg-deep: #0e0c10;
+  --bg: #16131a;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --bg-card-soft: rgba(255, 255, 255, 0.025);
+  --gold: #d4af37;
+  --gold-bright: #e8c45c;
+  --gold-dim: #a8862a;
+  --gold-soft: rgba(212, 175, 55, 0.35);
+  --gold-faint: rgba(212, 175, 55, 0.14);
+  --text-hi: #f5ecd8;
+  --text: #cfc6b2;
+  --text-dim: #a89f8f;
+  --text-faint: #6e6759;
+  --danger: #c9705a;
+
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+/* ---------- 通用容器 ---------- */
+.page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 0 48rpx calc(60rpx + env(safe-area-inset-bottom));
+  background: linear-gradient(165deg, #0e0c10 0%, #16131a 55%, #1a1620 100%);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.page--center {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* 背景星尘（极克制，静态） */
+.page::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(1rpx 1rpx at 12% 18%, rgba(232, 196, 92, 0.35), transparent 60%),
+    radial-gradient(1rpx 1rpx at 78% 12%, rgba(232, 196, 92, 0.28), transparent 60%),
+    radial-gradient(1.5rpx 1.5rpx at 62% 66%, rgba(255, 255, 255, 0.18), transparent 60%),
+    radial-gradient(1rpx 1rpx at 30% 74%, rgba(255, 255, 255, 0.14), transparent 60%),
+    radial-gradient(1rpx 1rpx at 88% 44%, rgba(212, 175, 55, 0.22), transparent 60%);
+  pointer-events: none;
+}
+
+/* ---------- 卡片 ---------- */
+.card {
+  background: var(--bg-card);
+  border: 1rpx solid var(--gold-soft);
+  border-radius: 28rpx;
+  box-shadow: 0 12rpx 48rpx rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(18rpx);
+}
+
+/* ---------- 按钮 ---------- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+  font-size: 30rpx;
+  letter-spacing: 4rpx;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+  box-sizing: border-box;
+}
+
+.btn::after { border: none; }
+
+.btn--gold {
+  background: linear-gradient(135deg, #e8c45c 0%, #d4af37 55%, #b8912f 100%);
+  color: #201a08;
+  font-weight: 600;
+  box-shadow: 0 16rpx 40rpx rgba(212, 175, 55, 0.28);
+}
+
+.btn--gold:active { transform: translateY(2rpx) scale(0.99); opacity: 0.92; }
+
+.btn--ghost {
+  background: transparent;
+  border: 1rpx solid var(--gold-soft);
+  color: var(--gold-bright);
+}
+
+.btn--ghost:active { background: var(--gold-faint); }
+
+.btn--dim {
+  background: transparent;
+  border: 1rpx solid rgba(255, 255, 255, 0.12);
+  color: var(--text-dim);
+  font-size: 26rpx;
+  letter-spacing: 2rpx;
+}
+
+/* ---------- 文本层级 ---------- */
+.h-title {
+  font-size: 44rpx;
+  font-weight: 600;
+  color: var(--text-hi);
+  letter-spacing: 6rpx;
+}
+
+.h-sub {
+  font-size: 28rpx;
+  color: var(--text-dim);
+  letter-spacing: 2rpx;
+}
+
+.h-gold {
+  color: var(--gold-bright);
+}
+
+/* ---------- 页脚合规 ---------- */
+.page-footer {
+  margin-top: auto;
+  padding-top: 60rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--text-faint);
+  letter-spacing: 2rpx;
+}
+
+/* ---------- 顶部安全区 ---------- */
+.safe-top {
+  padding-top: calc(env(safe-area-inset-top) + 24rpx);
+}
+
+/* ---------- 标签 chip ---------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8rpx 24rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  color: var(--gold-bright);
+  background: var(--gold-faint);
+  border: 1rpx solid var(--gold-soft);
+  margin: 8rpx;
+}
+
+/* ---------- 骨架占位 ---------- */
+.placeholder-shimmer {
+  background: linear-gradient(100deg, rgba(255,255,255,0.04) 30%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: 16rpx;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ---------- 呼吸提示 ---------- */
+@keyframes breath {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+.breath { animation: breath 2.4s ease-in-out infinite; }
+
+/* ============ v2 质感动效体系（来自交互质感设计规范 v1）============ */
+/* 按压回弹：弹簧曲线 */
+@keyframes pressSpring {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.94); }
+  70% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.btn-spring {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-spring:active { transform: scale(0.94); }
+
+/* 入场浮现 */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.anim-fadeUp { animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* 弹性入场（spring overshoot） */
+@keyframes springIn {
+  0% { opacity: 0; transform: scale(0.82) translateY(36rpx); }
+  55% { opacity: 1; transform: scale(1.04) translateY(-8rpx); }
+  75% { transform: scale(0.985) translateY(3rpx); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.anim-spring { animation: springIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* 徽章/图标浮现 */
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.82); }
+  60% { opacity: 1; transform: scale(1.06); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.anim-pop { animation: popIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* 3D 倾斜光影入场（人像卡） */
+@keyframes tiltIn {
+  0% { opacity: 0; transform: perspective(1400rpx) rotateY(16deg) rotateX(7deg) scale(0.9); filter: brightness(0.7); }
+  55% { opacity: 1; transform: perspective(1400rpx) rotateY(-4deg) rotateX(-2deg) scale(1.03); filter: brightness(1.05); }
+  80% { transform: perspective(1400rpx) rotateY(1.5deg) rotateX(0.5deg) scale(0.99); }
+  100% { opacity: 1; transform: perspective(1400rpx) rotateY(0) rotateX(0) scale(1); filter: brightness(1); }
+}
+
+.anim-tilt { animation: tiltIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* 翻牌切换 */
+@keyframes flipIn {
+  0% { opacity: 0; transform: rotateY(92deg); }
+  100% { opacity: 1; transform: rotateY(0); }
+}
+
+.anim-flip { animation: flipIn 0.55s cubic-bezier(0.34, 1.3, 0.64, 1) both; }
+
+/* 金色高光扫过（克制、低频） */
+@keyframes glowSweep {
+  0% { background-position: -180% 0; }
+  55% { background-position: 90% 0; }
+  100% { background-position: 180% 0; }
+}
+
+.glow-sweep {
+  background: linear-gradient(110deg, rgba(232,196,92,0) 30%, rgba(232,196,92,0.85) 50%, rgba(232,196,92,0) 70%);
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glowSweep 3.6s ease-in-out infinite;
+}
+
+/* 蓄力进度填充（保存卡片） */
+@keyframes holdFill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+.hold-fill-anim { animation: holdFill 0.8s linear forwards; }
+
+/* 数字跳动 */
+@keyframes numPulse {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.anim-num { animation: numPulse 0.5s ease; }
+

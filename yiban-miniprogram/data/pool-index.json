@@ -1,0 +1,18 @@
+[
+  { "id": "f20warm01",   "gender": "female", "age": 22, "style": "warm",    "src": "/assets/portrait-f20-warm.jpg" },
+  { "id": "f20sunny01",  "gender": "female", "age": 22, "style": "sunny",   "src": "/assets/portrait-f20-sunny.jpg" },
+  { "id": "f25cool01",   "gender": "female", "age": 25, "style": "cool",    "src": "/assets/portrait-f25-cool.jpg" },
+  { "id": "f25sunny01",  "gender": "female", "age": 25, "style": "sunny",   "src": "/assets/portrait-f25-sunny.jpg" },
+  { "id": "f30distant01","gender": "female", "age": 33, "style": "distant", "src": "/assets/portrait-f30-distant.jpg" },
+  { "id": "f35cool01",   "gender": "female", "age": 35, "style": "cool",    "src": "/assets/portrait-f35-cool.jpg" },
+  { "id": "f35sunny01",  "gender": "female", "age": 35, "style": "sunny",   "src": "/assets/portrait-f35-sunny.jpg" },
+  { "id": "f40cool01",   "gender": "female", "age": 41, "style": "cool",    "src": "/assets/portrait-f40-cool.jpg" },
+  { "id": "m20warm01",   "gender": "male",   "age": 23, "style": "warm",    "src": "/assets/portrait-m20-warm.jpg" },
+  { "id": "m25cool01",   "gender": "male",   "age": 25, "style": "cool",    "src": "/assets/portrait-m25-cool.jpg" },
+  { "id": "m25sunny01",  "gender": "male",   "age": 25, "style": "sunny",   "src": "/assets/portrait-m25-sunny.jpg" },
+  { "id": "m30sunny01",  "gender": "male",   "age": 31, "style": "sunny",   "src": "/assets/portrait-m30-sunny.jpg" },
+  { "id": "m30warm01",   "gender": "male",   "age": 32, "style": "warm",    "src": "/assets/portrait-m30-warm.jpg" },
+  { "id": "m35cool01",   "gender": "male",   "age": 35, "style": "cool",    "src": "/assets/portrait-m35-cool.jpg" },
+  { "id": "m35sunny01",  "gender": "male",   "age": 35, "style": "sunny",   "src": "/assets/portrait-m35-sunny.jpg" },
+  { "id": "m40warm01",   "gender": "male",   "age": 42, "style": "warm",    "src": "/assets/portrait-m40-warm.jpg" }
+]

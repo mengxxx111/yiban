@@ -1,0 +1,101 @@
+/* pages/start/start.wxss */
+.page { padding-bottom: calc(40rpx + env(safe-area-inset-bottom)); }
+
+/* 徽章：双金环 + 字标 */
+.emblem {
+  width: 240rpx;
+  height: 240rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(212, 175, 55, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 72rpx;
+  box-shadow: 0 0 0 14rpx rgba(212, 175, 55, 0.06), 0 0 0 16rpx rgba(212, 175, 55, 0.12);
+  background: radial-gradient(circle at 50% 42%, rgba(212, 175, 55, 0.14), transparent 70%);
+}
+
+.emblem::before {
+  content: "";
+  position: absolute;
+  inset: -6rpx;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(232, 196, 92, 0.28) 60deg, transparent 120deg, transparent 180deg, rgba(232, 196, 92, 0.18) 240deg, transparent 300deg);
+  animation: ringSpin 7s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes ringSpin {
+  to { transform: rotate(360deg); }
+}
+
+.emblem-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.emblem-cn {
+  font-size: 72rpx;
+  font-weight: 600;
+  color: var(--gold-bright);
+  letter-spacing: 12rpx;
+  text-indent: 12rpx;
+}
+
+.emblem-en {
+  font-size: 18rpx;
+  color: var(--text-faint);
+  letter-spacing: 8rpx;
+  margin-top: 8rpx;
+}
+
+/* 主标语：金色扫光 */
+.slogan {
+  font-size: 52rpx;
+  font-weight: 600;
+  color: var(--text-hi);
+  letter-spacing: 8rpx;
+  margin-bottom: 24rpx;
+  position: relative;
+  overflow: hidden;
+}
+
+.slogan::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(110deg, transparent 32%, rgba(232, 196, 92, 0.55) 50%, transparent 68%);
+  transform: translateX(-130%);
+  animation: sweepX 3.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes sweepX {
+  0% { transform: translateX(-130%); }
+  55%, 100% { transform: translateX(130%); }
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: var(--text-dim);
+  letter-spacing: 4rpx;
+  margin-bottom: 96rpx;
+}
+
+.cta {
+  width: 460rpx;
+  height: 96rpx;
+  font-size: 32rpx;
+  box-shadow: 0 16rpx 40rpx rgba(212, 175, 55, 0.28), 0 30rpx 80rpx rgba(212, 175, 55, 0.12);
+}
+
+.mini-entry {
+  margin-top: 48rpx;
+  font-size: 26rpx;
+  color: var(--text-faint);
+  letter-spacing: 2rpx;
+}
