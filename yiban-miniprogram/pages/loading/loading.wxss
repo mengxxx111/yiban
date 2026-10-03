@@ -3,7 +3,7 @@
   width: 280rpx;
   height: 280rpx;
   border-radius: 50%;
-  border: 3rpx solid rgba(212, 175, 55, 0.2);
+  border: 3rpx solid rgba(212, 175, 106, 0.2);
   border-top-color: var(--gold);
   animation: spin 1.2s linear infinite;
   display: flex;
@@ -20,7 +20,7 @@
   width: 216rpx;
   height: 216rpx;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.06);
+  background: rgba(212, 175, 106, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,7 +52,7 @@
 .progress-fill {
   height: 100%;
   border-radius: 999rpx;
-  background: linear-gradient(90deg, #b8912f, #e8c45c);
+  background: linear-gradient(90deg, #b08d4f, #e8c98f);
   transition: width 0.16s linear;
   box-shadow: 0 0 16rpx rgba(232, 196, 92, 0.5);
 }

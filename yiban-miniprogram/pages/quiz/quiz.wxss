@@ -34,7 +34,7 @@
 .progress-bar {
   height: 100%;
   border-radius: 999rpx;
-  background: linear-gradient(90deg, #b8912f, #e8c45c);
+  background: linear-gradient(90deg, #b08d4f, #e8c98f);
   transition: width 0.3s ease;
 }
 
@@ -79,12 +79,12 @@
   height: 240rpx;
   border-radius: 50%;
   border: 2rpx solid var(--gold);
-  background: radial-gradient(circle at 50% 40%, rgba(212, 175, 55, 0.16), transparent 70%);
+  background: radial-gradient(circle at 50% 40%, rgba(212, 175, 106, 0.16), transparent 70%);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 48rpx;
-  box-shadow: 0 0 0 14rpx rgba(212, 175, 55, 0.06);
+  box-shadow: 0 0 0 14rpx rgba(212, 175, 106, 0.06);
 }
 
 .type-text {

@@ -13,9 +13,9 @@
   width: 560rpx;
   height: 640rpx;
   border-radius: 36rpx;
-  border: 2rpx solid rgba(212, 175, 55, 0.5);
-  box-shadow: 0 30rpx 80rpx rgba(0, 0, 0, 0.5), 0 0 0 12rpx rgba(212, 175, 55, 0.05), 0 24rpx 60rpx rgba(212, 175, 55, 0.08);
-  background: #1a1620;
+  border: 2rpx solid rgba(212, 175, 106, 0.5);
+  box-shadow: 0 30rpx 80rpx rgba(0, 0, 0, 0.5), 0 0 0 12rpx rgba(212, 175, 106, 0.05), 0 24rpx 60rpx rgba(212, 175, 106, 0.08);
+  background: #232741;
 }
 
 .portrait--placeholder {
@@ -87,11 +87,11 @@
   overflow: hidden;
   height: 92rpx;
   border-radius: 999rpx;
-  background: linear-gradient(135deg, #e8c45c 0%, #d4af37 55%, #b8912f 100%);
+  background: linear-gradient(135deg, #e8c98f 0%, #d4af6a 55%, #b08d4f 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 16rpx 40rpx rgba(212, 175, 55, 0.28);
+  box-shadow: 0 16rpx 40rpx rgba(212, 175, 106, 0.28);
   user-select: none;
 }
 
@@ -107,7 +107,7 @@
 .hold-label {
   position: relative;
   z-index: 1;
-  color: #201a08;
+  color: #241d0e;
   font-size: 28rpx;
   font-weight: 600;
   letter-spacing: 3rpx;

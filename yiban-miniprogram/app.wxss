@@ -1,19 +1,19 @@
 /* ============ 一半 · 全局主题 ============
-   设计语言：深色东方暗调 × 月光金 · 清晰 × 克制 × 控制 × 信任
+   设计语言：星空藏蓝 × 暖金 · 清晰 × 克制 × 控制 × 信任（与「一半」网站调性同源）
    信息安静：重要的自己发光，其余安静下来
 */
 page {
   /* 色彩体系 */
-  --bg-deep: #0e0c10;
-  --bg: #16131a;
+  --bg-deep: #171a2e;
+  --bg: #1d2138;
   --bg-card: rgba(255, 255, 255, 0.04);
   --bg-card-soft: rgba(255, 255, 255, 0.025);
-  --gold: #d4af37;
-  --gold-bright: #e8c45c;
-  --gold-dim: #a8862a;
-  --gold-soft: rgba(212, 175, 55, 0.35);
-  --gold-faint: rgba(212, 175, 55, 0.14);
-  --text-hi: #f5ecd8;
+  --gold: #d4af6a;
+  --gold-bright: #e8c98f;
+  --gold-dim: #a08a52;
+  --gold-soft: rgba(212, 175, 106, 0.35);
+  --gold-faint: rgba(212, 175, 106, 0.14);
+  --text-hi: #f3ede0;
   --text: #cfc6b2;
   --text-dim: #a89f8f;
   --text-faint: #6e6759;
@@ -31,7 +31,7 @@ page {
   min-height: 100vh;
   box-sizing: border-box;
   padding: 0 48rpx calc(60rpx + env(safe-area-inset-bottom));
-  background: linear-gradient(165deg, #0e0c10 0%, #16131a 55%, #1a1620 100%);
+  background: linear-gradient(165deg, #171a2e 0%, #16131a 55%, #232741 100%);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -54,7 +54,7 @@ page {
     radial-gradient(1rpx 1rpx at 78% 12%, rgba(232, 196, 92, 0.28), transparent 60%),
     radial-gradient(1.5rpx 1.5rpx at 62% 66%, rgba(255, 255, 255, 0.18), transparent 60%),
     radial-gradient(1rpx 1rpx at 30% 74%, rgba(255, 255, 255, 0.14), transparent 60%),
-    radial-gradient(1rpx 1rpx at 88% 44%, rgba(212, 175, 55, 0.22), transparent 60%);
+    radial-gradient(1rpx 1rpx at 88% 44%, rgba(212, 175, 106, 0.22), transparent 60%);
   pointer-events: none;
 }
 
@@ -82,10 +82,10 @@ page {
 .btn::after { border: none; }
 
 .btn--gold {
-  background: linear-gradient(135deg, #e8c45c 0%, #d4af37 55%, #b8912f 100%);
-  color: #201a08;
+  background: linear-gradient(135deg, #e8c98f 0%, #d4af6a 55%, #b08d4f 100%);
+  color: #241d0e;
   font-weight: 600;
-  box-shadow: 0 16rpx 40rpx rgba(212, 175, 55, 0.28);
+  box-shadow: 0 16rpx 40rpx rgba(212, 175, 106, 0.28);
 }
 
 .btn--gold:active { transform: translateY(2rpx) scale(0.99); opacity: 0.92; }

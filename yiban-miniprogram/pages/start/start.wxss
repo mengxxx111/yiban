@@ -6,14 +6,14 @@
   width: 240rpx;
   height: 240rpx;
   border-radius: 50%;
-  border: 2rpx solid rgba(212, 175, 55, 0.55);
+  border: 2rpx solid rgba(212, 175, 106, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   margin-bottom: 72rpx;
-  box-shadow: 0 0 0 14rpx rgba(212, 175, 55, 0.06), 0 0 0 16rpx rgba(212, 175, 55, 0.12);
-  background: radial-gradient(circle at 50% 42%, rgba(212, 175, 55, 0.14), transparent 70%);
+  box-shadow: 0 0 0 14rpx rgba(212, 175, 106, 0.06), 0 0 0 16rpx rgba(212, 175, 106, 0.12);
+  background: radial-gradient(circle at 50% 42%, rgba(212, 175, 106, 0.14), transparent 70%);
 }
 
 .emblem::before {
@@ -90,7 +90,7 @@
   width: 460rpx;
   height: 96rpx;
   font-size: 32rpx;
-  box-shadow: 0 16rpx 40rpx rgba(212, 175, 55, 0.28), 0 30rpx 80rpx rgba(212, 175, 55, 0.12);
+  box-shadow: 0 16rpx 40rpx rgba(212, 175, 106, 0.28), 0 30rpx 80rpx rgba(212, 175, 106, 0.12);
 }
 
 .mini-entry {

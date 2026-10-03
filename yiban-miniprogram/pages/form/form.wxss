@@ -58,7 +58,7 @@
 .opt-card--on {
   border-color: var(--gold);
   background: var(--gold-faint);
-  box-shadow: 0 8rpx 28rpx rgba(212, 175, 55, 0.14);
+  box-shadow: 0 8rpx 28rpx rgba(212, 175, 106, 0.14);
   animation: popIn 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
@@ -90,7 +90,7 @@
   color: var(--text-hi);
   letter-spacing: 2rpx;
   background: rgba(255, 255, 255, 0.05);
-  border: 1rpx solid rgba(212, 175, 55, 0.3);
+  border: 1rpx solid rgba(212, 175, 106, 0.3);
   border-radius: 18rpx;
   padding: 18rpx 34rpx;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, background 0.2s ease;
@@ -99,7 +99,7 @@
 .pick:active {
   transform: scale(0.95);
   border-color: var(--gold);
-  background: rgba(212, 175, 55, 0.12);
+  background: rgba(212, 175, 106, 0.12);
 }
 
 .pick-unit {
