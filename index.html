@@ -744,14 +744,14 @@
             const track=$('gallery-track');
             const zone=$('gallery-zone');
             const samples=[
-                ['assets/final_female-25s-sunny.png','25-29','明朗'],
-                ['assets/final_male-25s-cool.png','25-29','沉静'],
-                ['assets/final_female-35s-sunny.png','30-34','热忱'],
-                ['assets/final_male-35s-cool.png','30-34','温厚'],
-                ['assets/final_female-25s-cool.png','25-29','清冷'],
-                ['assets/final_male-25s-sunny.png','25-29','阳光'],
-                ['assets/final_female-35s-cool.png','30-34','自持'],
-                ['assets/final_male-35s-sunny.png','30-34','明朗']
+                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-25s-sunny.png','25-29','明朗'],
+                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-25s-cool.png','25-29','沉静'],
+                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-35s-sunny.png','30-34','热忱'],
+                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-35s-cool.png','30-34','温厚'],
+                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-25s-cool.png','25-29','清冷'],
+                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-25s-sunny.png','25-29','阳光'],
+                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-35s-cool.png','30-34','自持'],
+                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-35s-sunny.png','30-34','明朗']
             ];
             track.innerHTML=samples.map(s=>{
                 const tag=s[1].split('-')[0]+'s';
@@ -896,8 +896,8 @@
 
         /* ===== 人像库（仅国内·中国面孔） ===== */
         const PORTRAITS = {
-            male:   { '清冷':['assets/final_male-25s-cool.png','assets/final_male-35s-cool.png'],   '阳光':['assets/final_male-25s-sunny.png','assets/final_male-35s-sunny.png'],   '温柔':['assets/final_male-25s-cool.png','assets/final_male-35s-sunny.png'],   '沉稳':['assets/final_male-25s-sunny.png','assets/final_male-35s-cool.png'] },
-            female: { '清冷':['assets/final_female-25s-cool.png','assets/final_female-35s-cool.png'], '阳光':['assets/final_female-25s-sunny.png','assets/final_female-35s-sunny.png'], '温柔':['assets/final_female-25s-cool.png','assets/final_female-35s-sunny.png'], '沉稳':['assets/final_female-25s-sunny.png','assets/final_female-35s-cool.png'] }
+            male:   { '清冷':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-25s-cool.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-35s-cool.png'],   '阳光':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-25s-sunny.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-35s-sunny.png'],   '温柔':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-25s-cool.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-35s-sunny.png'],   '沉稳':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-25s-sunny.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-35s-cool.png'] },
+            female: { '清冷':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-25s-cool.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-35s-cool.png'], '阳光':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-25s-sunny.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-35s-sunny.png'], '温柔':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-25s-cool.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-35s-sunny.png'], '沉稳':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-25s-sunny.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-35s-cool.png'] }
         };
 
         const timePool = ['本周六傍晚','周日午后','工作日清晨','周五深夜','周三午后','雨天的下午'];
