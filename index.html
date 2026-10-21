@@ -495,7 +495,7 @@
                     </div>
                     <div class="trio-item">
                         <svg class="t-ico" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.7-9.5-9C1 8.7 3.2 5 6.7 5c2.3 0 4 1.3 5.3 3.2C13.3 6.3 15 5 17.3 5c3.5 0 5.7 3.7 4.2 7-2 4.3-9.5 9-9.5 9z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-                        <div class="t-name">气质</div><div class="t-desc">清冷阳光 · 温润疏离</div>
+                        <div class="t-name">气质</div><div class="t-desc">阳光温柔 · 清冷沉稳</div>
                     </div>
                 </div>
 
@@ -546,8 +546,8 @@
                         <div class="tag-group" id="temperament-group">
                             <div class="tag" data-value="清冷">清冷</div>
                             <div class="tag" data-value="阳光">阳光</div>
-                            <div class="tag" data-value="温润">温润</div>
-                            <div class="tag" data-value="疏离">疏离</div>
+                            <div class="tag" data-value="温柔">温柔</div>
+                            <div class="tag" data-value="沉稳">沉稳</div>
                         </div>
                     </div>
 
@@ -695,6 +695,29 @@
                     btn.style.transform='translate(0,0)';
                     setTimeout(()=>{ btn.style.transition=''; },500);
                 });
+            });
+        })();
+
+        /* ===== 2b. 触屏按压磁吸（手机） ===== */
+        (function(){
+            if(reduceMotion || isFinePointer) return;
+            document.querySelectorAll('.magnetic,.orb-btn,.tag,.btn,.g-card.cta').forEach(btn=>{
+                btn.addEventListener('pointerdown',e=>{
+                    if(e.pointerType!=='touch') return;
+                    const r=btn.getBoundingClientRect();
+                    const dx=e.clientX-(r.left+r.width/2);
+                    const dy=e.clientY-(r.top+r.height/2);
+                    btn.style.transition='transform 0.12s cubic-bezier(0.34,1.56,0.64,1)';
+                    btn.style.transform='translate('+(dx*0.10).toFixed(1)+'px,'+(dy*0.12).toFixed(1)+'px) scale(0.97)';
+                });
+                const back=()=>{
+                    btn.style.transition='transform 0.45s cubic-bezier(0.34,1.56,0.64,1)';
+                    btn.style.transform='translate(0,0) scale(1)';
+                    setTimeout(()=>{ if(!btn.style.transform) btn.style.transition=''; },460);
+                };
+                btn.addEventListener('pointerup',back);
+                btn.addEventListener('pointercancel',back);
+                btn.addEventListener('pointerleave',back);
             });
         })();
 
@@ -873,8 +896,8 @@
 
         /* ===== 人像库（仅国内·中国面孔） ===== */
         const PORTRAITS = {
-            male:   { '清冷':['assets/final_male-25s-cool.png','assets/final_male-35s-cool.png'],   '阳光':['assets/final_male-25s-sunny.png','assets/final_male-35s-sunny.png'],   '温润':['assets/final_male-25s-cool.png','assets/final_male-35s-sunny.png'],   '疏离':['assets/final_male-25s-sunny.png','assets/final_male-35s-cool.png'] },
-            female: { '清冷':['assets/final_female-25s-cool.png','assets/final_female-35s-cool.png'], '阳光':['assets/final_female-25s-sunny.png','assets/final_female-35s-sunny.png'], '温润':['assets/final_female-25s-cool.png','assets/final_female-35s-sunny.png'], '疏离':['assets/final_female-25s-sunny.png','assets/final_female-35s-cool.png'] }
+            male:   { '清冷':['assets/final_male-25s-cool.png','assets/final_male-35s-cool.png'],   '阳光':['assets/final_male-25s-sunny.png','assets/final_male-35s-sunny.png'],   '温柔':['assets/final_male-25s-cool.png','assets/final_male-35s-sunny.png'],   '沉稳':['assets/final_male-25s-sunny.png','assets/final_male-35s-cool.png'] },
+            female: { '清冷':['assets/final_female-25s-cool.png','assets/final_female-35s-cool.png'], '阳光':['assets/final_female-25s-sunny.png','assets/final_female-35s-sunny.png'], '温柔':['assets/final_female-25s-cool.png','assets/final_female-35s-sunny.png'], '沉稳':['assets/final_female-25s-sunny.png','assets/final_female-35s-cool.png'] }
         };
 
         const timePool = ['本周六傍晚','周日午后','工作日清晨','周五深夜','周三午后','雨天的下午'];
