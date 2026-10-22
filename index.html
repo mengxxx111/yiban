@@ -294,6 +294,31 @@
         .g-card.cta .g-cta-text { font-family:"Noto Serif SC",serif; font-size:17px; color:var(--gold-bright); letter-spacing:0.16em; line-height:2; }
         .gallery-scroll-hint { margin-top:26px; text-align:center; font-size:10.5px; color:var(--cream-faint); letter-spacing:0.3em; opacity:0.75; }
 
+        /* ===== 四系气场象限 ===== */
+        .aura-zone { padding:74px 24px 10px; text-align:center; }
+        .aura-head .g-step { display:inline-flex; align-items:center; gap:12px; font-size:10.5px; color:var(--gold); letter-spacing:0.48em; margin-bottom:14px; }
+        .aura-head .g-step::before,.aura-head .g-step::after { content:''; width:20px; height:1px; background:linear-gradient(to right,transparent,var(--gold-dim)); }
+        .aura-head .g-step::after { background:linear-gradient(to left,transparent,var(--gold-dim)); }
+        .aura-head h3 { font-family:"Noto Serif SC",serif; font-size:22px; font-weight:400; letter-spacing:0.14em; color:var(--cream); margin-bottom:6px; }
+        .aura-map { position:relative; max-width:720px; margin:40px auto 0; padding:48px 10px 48px; }
+        .aura-map::before { content:''; position:absolute; left:6%; right:6%; top:50%; height:1px; background:linear-gradient(to right,transparent,rgba(212,175,106,0.5) 20%,rgba(212,175,106,0.5) 80%,transparent); }
+        .aura-map::after { content:''; position:absolute; left:50%; top:4%; bottom:4%; width:1px; background:linear-gradient(to bottom,transparent,rgba(212,175,106,0.5) 20%,rgba(212,175,106,0.5) 80%,transparent); }
+        .aura-ax { position:absolute; font-size:11px; letter-spacing:0.24em; }
+        .ax-cold { left:2px; top:50%; transform:translateY(-50%); color:var(--cream-faint); }
+        .ax-hot { right:2px; top:50%; transform:translateY(-50%); color:var(--gold); }
+        .ay-bright { left:50%; top:-16px; transform:translateX(-50%); color:var(--gold); }
+        .ay-deep { left:50%; bottom:-16px; transform:translateX(-50%); color:var(--cream-faint); }
+        .aura-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .aura-cell { border-radius:14px; padding:20px 12px 16px; background:rgba(10,13,28,0.55); }
+        .a-pos { font-size:10px; letter-spacing:0.22em; margin-bottom:9px; }
+        .a-name { font-family:"Noto Serif SC",serif; font-size:19px; letter-spacing:0.26em; margin-bottom:7px; }
+        .a-words { font-size:12.5px; letter-spacing:0.14em; }
+        .a-desc { font-size:11.5px; line-height:1.8; letter-spacing:0.05em; margin-top:11px; color:#aeb6cd; }
+        .a-clear { border:1px solid rgba(159,184,216,0.35); } .a-clear .a-name { color:#e8f0fa; } .a-clear .a-words { color:#9fb8d8; } .a-clear .a-pos { color:#9fb8d8; }
+        .a-light { border:1px solid rgba(212,175,106,0.45); } .a-light .a-name { color:#f8efd8; } .a-light .a-words { color:#d4af6a; } .a-light .a-pos { color:#d4af6a; }
+        .a-still { border:1px solid rgba(126,140,180,0.4); } .a-still .a-name { color:#dde4f2; } .a-still .a-words { color:#8a96b5; } .a-still .a-pos { color:#8a96b5; }
+        .a-warm { border:1px solid rgba(232,185,106,0.4); } .a-warm .a-name { color:#f7ecd2; } .a-warm .a-words { color:#e8b96a; } .a-warm .a-pos { color:#e8b96a; }
+
         /* ===== 表单页 ===== */
         .form-page { padding:6px 2px 4px; }
         .card {
@@ -615,6 +640,26 @@
                         <p class="footer-text">AI 生成 · 内容仅供娱乐参考</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 四系气场象限 ===== -->
+    <div class="aura-zone" id="aura-zone">
+        <div class="aura-head">
+            <div class="g-step">四系气场</div>
+            <h3>人海相逢，先感知气场</h3>
+        </div>
+        <div class="aura-map">
+            <span class="aura-ax ay-bright">明朗</span>
+            <span class="aura-ax ay-deep">深敛</span>
+            <span class="aura-ax ax-cold">清冽</span>
+            <span class="aura-ax ax-hot">温暖</span>
+            <div class="aura-grid">
+                <div class="aura-cell a-clear"><div class="a-pos">清冽 · 明朗</div><div class="a-name">澈系</div><div class="a-words">山清水秀</div><div class="a-desc">如山间清泉 · 霜夜月白<br>通透自持，静而清远</div></div>
+                <div class="aura-cell a-light"><div class="a-pos">温暖 · 明朗</div><div class="a-name">光系</div><div class="a-words">阳光明媚</div><div class="a-desc">如春日晴空 · 晨光初照<br>明朗坦荡，一眼温暖</div></div>
+                <div class="aura-cell a-still"><div class="a-pos">清冽 · 深敛</div><div class="a-name">安系</div><div class="a-words">静水流深</div><div class="a-desc">如深潭静水 · 山岳无言<br>稳而可靠，厚积于内</div></div>
+                <div class="aura-cell a-warm"><div class="a-pos">温暖 · 深敛</div><div class="a-name">暖系</div><div class="a-words">如沐春风</div><div class="a-desc">如玉温润 · 如四月风<br>靠近即暖，言语入心</div></div>
             </div>
         </div>
     </div>
