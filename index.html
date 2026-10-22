@@ -435,6 +435,10 @@
         .meet-tip .tip-title { color:var(--gold); font-size:11px; letter-spacing:0.36em; margin-bottom:8px; }
         .meet-tip .tip-line { color:var(--cream); font-size:15.5px; letter-spacing:0.05em; }
         .meet-tip .tip-line .gold { color:var(--gold-bright); }
+        .match-reason {
+            color:var(--gold-bright); font-size:15.5px; line-height:1.9;
+            letter-spacing:0.04em; margin-bottom:24px; font-style:italic;
+        }
         .result-desc {
             font-size:12.5px; color:var(--cream-faint); text-align:center;
             margin-bottom:30px; line-height:2.2; letter-spacing:0.1em;
@@ -520,7 +524,7 @@
                     </div>
                     <div class="trio-item">
                         <svg class="t-ico" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.7-9.5-9C1 8.7 3.2 5 6.7 5c2.3 0 4 1.3 5.3 3.2C13.3 6.3 15 5 17.3 5c3.5 0 5.7 3.7 4.2 7-2 4.3-9.5 9-9.5 9z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-                        <div class="t-name">气质</div><div class="t-desc">阳光温柔 · 清冷沉稳</div>
+                        <div class="t-name">气场</div><div class="t-desc">光系暖系 · 澈系安系</div>
                     </div>
                 </div>
 
@@ -546,19 +550,6 @@
 
                 <div class="form-grid">
                     <div class="card">
-                        <div class="field-label">你的生日</div>
-                        <div class="calendar-switch" id="calendar-switch">
-                            <button type="button" class="active" onclick="setCalendar('solar')">阳历</button>
-                            <button type="button" onclick="setCalendar('lunar')">农历</button>
-                        </div>
-                        <div class="date-row">
-                            <select id="birth-year"><option value="">年</option></select>
-                            <select id="birth-month"><option value="">月</option></select>
-                            <select id="birth-day"><option value="">日</option></select>
-                        </div>
-                    </div>
-
-                    <div class="card">
                         <div class="field-label">你的性别</div>
                         <select id="gender">
                             <option value="male">男生</option>
@@ -567,11 +558,56 @@
                     </div>
 
                     <div class="card">
-                        <div class="field-label">你偏好的气质</div>
+                        <div class="field-label">你的年龄段</div>
+                        <div class="tag-group" id="age-group">
+                            <div class="tag" data-value="20-24">20-24</div>
+                            <div class="tag" data-value="25-29">25-29</div>
+                            <div class="tag" data-value="30-34">30-34</div>
+                            <div class="tag" data-value="35-39">35-39</div>
+                            <div class="tag" data-value="40-44">40-44</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="field-label">你的属性（生肖）</div>
+                        <select id="shengxiao">
+                            <option value="">请选择</option>
+                            <option value="鼠">鼠</option><option value="牛">牛</option><option value="虎">虎</option><option value="兔">兔</option><option value="龙">龙</option><option value="蛇">蛇</option>
+                            <option value="马">马</option><option value="羊">羊</option><option value="猴">猴</option><option value="鸡">鸡</option><option value="狗">狗</option><option value="猪">猪</option>
+                        </select>
+                    </div>
+
+                    <div class="card">
+                        <div class="field-label">你的星座</div>
+                        <select id="zodiac">
+                            <option value="">请选择</option>
+                            <option value="白羊座">白羊座</option><option value="金牛座">金牛座</option><option value="双子座">双子座</option><option value="巨蟹座">巨蟹座</option><option value="狮子座">狮子座</option><option value="处女座">处女座</option>
+                            <option value="天秤座">天秤座</option><option value="天蝎座">天蝎座</option><option value="射手座">射手座</option><option value="摩羯座">摩羯座</option><option value="水瓶座">水瓶座</option><option value="双鱼座">双鱼座</option>
+                        </select>
+                    </div>
+
+                    <div class="card">
+                        <div class="field-label">你是急性子还是慢性子？</div>
+                        <div class="tag-group" id="tempo-group">
+                            <div class="tag" data-value="急性子">急性子</div>
+                            <div class="tag" data-value="慢性子">慢性子</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="field-label">你偏内向还是外向？</div>
+                        <div class="tag-group" id="intro-group">
+                            <div class="tag" data-value="外向">外向</div>
+                            <div class="tag" data-value="内向">内向</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="field-label">你的气质</div>
                         <div class="tag-group" id="temperament-group">
-                            <div class="tag" data-value="清冷">清冷</div>
                             <div class="tag" data-value="阳光">阳光</div>
                             <div class="tag" data-value="温柔">温柔</div>
+                            <div class="tag" data-value="清冷">清冷</div>
                             <div class="tag" data-value="沉稳">沉稳</div>
                         </div>
                     </div>
@@ -619,6 +655,8 @@
 
                     <div class="result-info">
                         <div class="result-tags" id="result-tags"></div>
+
+                        <div class="match-reason" id="match-reason"></div>
 
                         <div class="meet-tip">
                             <div class="tip-title">相遇提示</div>
@@ -789,14 +827,14 @@
             const track=$('gallery-track');
             const zone=$('gallery-zone');
             const samples=[
-                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-25s-sunny.png','25-29','明朗'],
-                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-25s-cool.png','25-29','沉静'],
-                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-35s-sunny.png','30-34','热忱'],
-                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-35s-cool.png','30-34','温厚'],
-                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-25s-cool.png','25-29','清冷'],
-                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-25s-sunny.png','25-29','阳光'],
-                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-35s-cool.png','30-34','自持'],
-                ['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-35s-sunny.png','30-34','明朗']
+                ['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/female/25s/光系/female-25s-sunny-001.webp','25-29', '光系'],
+                ['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/male/25s/澈系/male-25s-cool-001.webp','25-29', '澈系'],
+                ['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/female/35s/光系/female-35s-sunny-001.webp','30-34', '暖系'],
+                ['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/male/35s/澈系/male-35s-cool-001.webp','30-34', '安系'],
+                ['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/female/25s/澈系/female-25s-cool-001.webp','25-29', '澈系'],
+                ['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/male/25s/光系/male-25s-sunny-001.webp','25-29', '光系'],
+                ['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/female/35s/澈系/female-35s-cool-001.webp','30-34', '安系'],
+                ['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/male/35s/光系/male-35s-sunny-001.webp','30-34', '暖系']
             ];
             track.innerHTML=samples.map(s=>{
                 const tag=s[1].split('-')[0]+'s';
@@ -941,8 +979,8 @@
 
         /* ===== 人像库（仅国内·中国面孔） ===== */
         const PORTRAITS = {
-            male:   { '清冷':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-25s-cool.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-35s-cool.png'],   '阳光':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-25s-sunny.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-35s-sunny.png'],   '温柔':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-25s-cool.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-35s-sunny.png'],   '沉稳':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-25s-sunny.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_male-35s-cool.png'] },
-            female: { '清冷':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-25s-cool.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-35s-cool.png'], '阳光':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-25s-sunny.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-35s-sunny.png'], '温柔':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-25s-cool.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-35s-sunny.png'], '沉稳':['https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-25s-sunny.png','https://yiban-assets-1498978585.cos.ap-beijing.myqcloud.com/final_female-35s-cool.png'] }
+            male:   { '光系':['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/male/25s/光系/male-25s-sunny-001.webp','https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/male/35s/光系/male-35s-sunny-001.webp'], '暖系':['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/male/25s/澈系/male-25s-cool-001.webp','https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/male/35s/光系/male-35s-sunny-001.webp'], '澈系':['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/male/25s/澈系/male-25s-cool-001.webp','https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/male/35s/澈系/male-35s-cool-001.webp'], '安系':['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/male/25s/光系/male-25s-sunny-001.webp','https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/male/35s/澈系/male-35s-cool-001.webp'] },
+            female: { '光系':['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/female/25s/光系/female-25s-sunny-001.webp','https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/female/35s/光系/female-35s-sunny-001.webp'], '暖系':['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/female/25s/澈系/female-25s-cool-001.webp','https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/female/35s/光系/female-35s-sunny-001.webp'], '澈系':['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/female/25s/澈系/female-25s-cool-001.webp','https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/female/35s/澈系/female-35s-cool-001.webp'], '安系':['https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/female/25s/光系/female-25s-sunny-001.webp','https://cdn.jsdelivr.net/gh/mengxxx111/yiban-assets@main/female/35s/澈系/female-35s-cool-001.webp'] }
         };
 
         const timePool = ['本周六傍晚','周日午后','工作日清晨','周五深夜','周三午后','雨天的下午'];
@@ -950,20 +988,46 @@
         const crowdPool = ['独自出行的人','朋友的朋友聚会','穿浅色衣服的人','手里拿着书的人','戴耳机的人'];
         const ageText = { '25': '25-29岁', '35': '30-34岁' };
 
-        let calendarMode = 'solar';
         let selectedTemperament = '';
         let selectedRegion = '随缘';
+        let selectedAge = '';
+        let selectedTempo = '';
+        let selectedIntro = '';
+
+        /* 气质 → 气场系（用户自我认知 → 产品标签） */
+        const TEMP2SYS = { '阳光':'光系', '温柔':'暖系', '清冷':'澈系', '沉稳':'安系' };
+        /* 系互补（对角） */
+        const COMPLEMENT_SYS = { '光系':'安系', '安系':'光系', '暖系':'澈系', '澈系':'暖系' };
+        /* 年龄段 → 素材档位（800张库上线后逐档精确） */
+        const AGE_BUCKET = { '20-24':'25s', '25-29':'25s', '30-34':'35s', '35-39':'35s', '40-44':'35s' };
 
         /* ===== 初始化下拉 ===== */
         (function(){
-            const ys=$('birth-year');
-            for(let y=2008;y>=1970;y--){ const o=document.createElement('option'); o.value=y; o.text=y+'年'; ys.add(o); }
             const ms=$('birth-month');
-            for(let m=1;m<=12;m++){ const o=document.createElement('option'); o.value=String(m).padStart(2,'0'); o.text=m+'月'; ms.add(o); }
-            const ds=$('birth-day');
-            for(let d=1;d<=31;d++){ const o=document.createElement('option'); o.value=String(d).padStart(2,'0'); o.text=d+'日'; ds.add(o); }
+            if(ms) for(let m=1;m<=12;m++){ const o=document.createElement('option'); o.value=String(m).padStart(2,'0'); o.text=m+'月'; ms.add(o); }
         })();
 
+        document.querySelectorAll('#age-group .tag').forEach(tag=>{
+            tag.addEventListener('click',()=>{
+                document.querySelectorAll('#age-group .tag').forEach(t=>t.classList.remove('selected'));
+                tag.classList.add('selected');
+                selectedAge = tag.dataset.value;
+            });
+        });
+        document.querySelectorAll('#tempo-group .tag').forEach(tag=>{
+            tag.addEventListener('click',()=>{
+                document.querySelectorAll('#tempo-group .tag').forEach(t=>t.classList.remove('selected'));
+                tag.classList.add('selected');
+                selectedTempo = tag.dataset.value;
+            });
+        });
+        document.querySelectorAll('#intro-group .tag').forEach(tag=>{
+            tag.addEventListener('click',()=>{
+                document.querySelectorAll('#intro-group .tag').forEach(t=>t.classList.remove('selected'));
+                tag.classList.add('selected');
+                selectedIntro = tag.dataset.value;
+            });
+        });
         document.querySelectorAll('#temperament-group .tag').forEach(tag=>{
             tag.addEventListener('click',()=>{
                 document.querySelectorAll('#temperament-group .tag').forEach(t=>t.classList.remove('selected'));
@@ -978,13 +1042,6 @@
                 selectedRegion = tag.dataset.value;
             });
         });
-
-        function setCalendar(mode){
-            calendarMode = mode;
-            document.querySelectorAll('#calendar-switch button').forEach(b=>b.classList.remove('active'));
-            document.querySelector('#calendar-switch button[onclick*="'+mode+'"]').classList.add('active');
-            showToast(mode==='solar'?'按阳历生日匹配':'按农历生日匹配');
-        }
 
         /* ===== 页面切换（幕帘转场） ===== */
         const curtain=$('curtain');
@@ -1040,29 +1097,18 @@
             }
         }
 
-        function parseBirthday(){
-            const year=parseInt($('birth-year').value,10);
-            const month=parseInt($('birth-month').value,10);
-            const day=parseInt($('birth-day').value,10);
-            if(!year||!month||!day) return null;
-            let solar={year,month,day};
-            if(calendarMode==='lunar'){
-                solar=lunarToSolar(year,month,day,false);
-            }
-            const lunar=solarToLunar(solar.year,solar.month,solar.day);
-            return {
-                solar,
-                shengxiao:getShengxiao(lunar.year),
-                term:getSolarTerm(solar.month,solar.day),
-                zodiac:getZodiac(solar.month,solar.day)
-            };
-        }
+        function parseBirthday(){ return null; }
 
         function generate(){
             const gender=$('gender').value;
-            const bd=parseBirthday();
-            if(!bd){ showToast('请先选择完整生日'); return; }
-            if(!selectedTemperament){ showToast('请选择偏好气质'); return; }
+            if(!selectedAge){ showToast('请选择你的年龄段'); return; }
+            const sx=$('shengxiao').value;
+            if(!sx){ showToast('请选择你的生肖'); return; }
+            const zo=$('zodiac').value;
+            if(!zo){ showToast('请选择你的星座'); return; }
+            if(!selectedTempo){ showToast('请选择你的性子'); return; }
+            if(!selectedIntro){ showToast('请选择内向或外向'); return; }
+            if(!selectedTemperament){ showToast('请选择你的气质'); return; }
 
             goPage('page-loading', rainCards);
             const fateNum=$('fate-num');
@@ -1079,22 +1125,33 @@
             try{
                 const targetGender=gender==='male'?'female':'male';
                 const targetGenderText=gender==='male'?'女性':'男性';
+                const sys=TEMP2SYS[selectedTemperament]||'光系';
+                const complementary=Math.random()<0.8;   // 80% 互补 / 20% 同频
+                const targetSys=complementary?COMPLEMENT_SYS[sys]:sys;
                 const time=randomPick(timePool), place=randomPick(placePool), crowd=randomPick(crowdPool);
-                const pool=PORTRAITS[targetGender][selectedTemperament]||PORTRAITS[targetGender]['清冷'];
+                const bucket=AGE_BUCKET[selectedAge]||'25s';
+                let pool=(PORTRAITS[targetGender][targetSys]||[]).filter(u=>u.includes('-'+bucket+'-'));
+                if(!pool.length) pool=PORTRAITS[targetGender][targetSys]||PORTRAITS[targetGender]['光系'];
                 const imageUrl=randomPick(pool);
                 const ageDetect=imageUrl.match(/-(\d+)s-/);
                 const ageLabel=ageDetect&&ageText[ageDetect[1]]?ageText[ageDetect[1]]:null;
 
-                const tags=[targetGenderText,selectedTemperament,bd.shengxiao+'生肖',bd.zodiac,bd.term];
+                const tags=[targetGenderText,targetSys,sx+'生肖',zo,selectedTempo,selectedIntro,selectedTemperament];
                 if(ageLabel) tags.push(ageLabel);
                 if(selectedRegion!=='随缘') tags.push(selectedRegion);
                 const finalTags=tags.filter(t=>t);
+
+                const sysDesc={ '光系':'阳光明媚', '暖系':'如沐春风', '澈系':'山清水秀', '安系':'静水流深' };
+                const reason=complementary
+                    ? '你是'+selectedTemperament+'的'+sys+'，Ta 是'+targetSys+'的'+sysDesc[targetSys]+'——你的一半天，正好去补 Ta 的另一半'
+                    : '同是'+sys+'的'+sysDesc[sys]+'，你们是同频的人，不必解释也懂彼此';
 
                 setTimeout(()=>{
                     clearInterval(timer);
                     fateNum.textContent='100';
                     $('progress').style.width='100%';
-                    $('result-sub').textContent=targetGenderText+' · '+selectedTemperament+' · '+bd.shengxiao+'年';
+                    $('result-sub').textContent=targetGenderText+' · '+targetSys+' · '+(complementary?'互补':'同频');
+                    $('match-reason').textContent=reason;
                     const img=$('result-img');
                     img.onerror=()=>{
                         img.style.display='block';
