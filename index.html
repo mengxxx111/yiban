@@ -623,6 +623,7 @@
                             <div class="tag tri" data-value="华南">华南</div>
                             <div class="tag tri" data-value="西北">西北</div>
                             <div class="tag tri" data-value="西南">西南</div>
+                            <div class="tag tri" data-value="海外">海外</div>
                             <div class="tag tri selected" data-value="随缘">随缘</div>
                         </div>
                     </div>
@@ -1174,7 +1175,9 @@
                     $('result-tags').innerHTML=finalTags.map(t=>'<span class="result-tag">'+t+'</span>').join('');
                     const regionLine=selectedRegion==='随缘'
                         ? 'Ta的节奏，要由你来慢慢读'
-                        : '同为'+selectedRegion+'人，相处更懂彼此的温度';
+                        : selectedRegion==='海外'
+                            ? '跨越山海，缘分没有边界'
+                            : '同为'+selectedRegion+'人，相处更懂彼此的温度';
                     $('meet-tip').innerHTML=
                         '<div class="tip-line">'+time+' · <span class="gold">'+place+'</span></div>'+
                         '<div class="tip-line">留意'+crowd+'</div>'+
