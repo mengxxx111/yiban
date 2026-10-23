@@ -551,10 +551,10 @@
                 <div class="form-grid">
                     <div class="card">
                         <div class="field-label">你的性别</div>
-                        <select id="gender">
-                            <option value="male">男生</option>
-                            <option value="female">女生</option>
-                        </select>
+                        <div class="tag-group" id="gender-group">
+                            <div class="tag" data-value="male">男生</div>
+                            <div class="tag" data-value="female">女生</div>
+                        </div>
                     </div>
 
                     <div class="card">
@@ -992,6 +992,7 @@
         let selectedTemperament = '';
         let selectedRegion = '随缘';
         let selectedAge = '';
+        let selectedGender = '';
         let selectedTempo = '';
         let selectedIntro = '';
 
@@ -1008,6 +1009,13 @@
             if(ms) for(let m=1;m<=12;m++){ const o=document.createElement('option'); o.value=String(m).padStart(2,'0'); o.text=m+'月'; ms.add(o); }
         })();
 
+        document.querySelectorAll('#gender-group .tag').forEach(tag=>{
+            tag.addEventListener('click',()=>{
+                document.querySelectorAll('#gender-group .tag').forEach(t=>t.classList.remove('selected'));
+                tag.classList.add('selected');
+                selectedGender = tag.dataset.value;
+            });
+        });
         document.querySelectorAll('#age-group .tag').forEach(tag=>{
             tag.addEventListener('click',()=>{
                 document.querySelectorAll('#age-group .tag').forEach(t=>t.classList.remove('selected'));
@@ -1101,7 +1109,8 @@
         function parseBirthday(){ return null; }
 
         function generate(){
-            const gender=$('gender').value;
+            const gender=selectedGender;
+            if(!gender){ showToast('请选择你的性别'); return; }
             if(!selectedAge){ showToast('请选择你的年龄段'); return; }
             const sx=$('shengxiao').value;
             if(!sx){ showToast('请选择你的生肖'); return; }
